@@ -691,10 +691,17 @@
     document.getElementById('app').style.display = on ? '' : 'none';
     document.getElementById('authGate').style.display = on ? 'none' : '';
   }
-  function saveSession(){ localStorage.setItem(AUTH_SESSION_KEY, JSON.stringify({ exp: Date.now() + AUTH_SESSION_TTL_MS })); }
-  function hasValidSession(){
-    try { const raw = localStorage.getItem(AUTH_SESSION_KEY); if (!raw) return false; const obj = JSON.parse(raw); return obj && obj.exp && Date.now() < obj.exp; } catch { return false; }
-  }
+  function saveSession() {
+  const exp = Date.now() + AUTH_SESSION_TTL_MS;
+  // Save expiry timestamp in a cookie that lasts AUTH_SESSION_TTL_MS seconds
+  document.cookie = `${AUTH_SESSION_KEY}=${exp}; max-age=${AUTH_SESSION_TTL_MS / 1000}; path=/`;
+}
+ function hasValidSession() {
+  const match = document.cookie.match(new RegExp(`${AUTH_SESSION_KEY}=([^;]+)`));
+  if (!match) return false;
+  const exp = parseInt(match[1], 10);
+  return Date.now() < exp;
+}
   async function sha256Hex(str){ const enc = new TextEncoder().encode(str); const buf = await crypto.subtle.digest("SHA-256", enc); return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join(''); }
   async function checkRemotePassword(input){
     if (!AUTH_REMOTE_URL) return null;
@@ -717,7 +724,12 @@
     if (ok === null) ok = (pass === AUTH_LOCAL_PASSWORD);
     if (ok) { saveSession(); setAppVisible(true); appInitOnce(); } else { err.style.display = ''; }
   }
-  function logout(){ localStorage.removeItem(AUTH_SESSION_KEY); document.getElementById('authPass').value = ''; setAppVisible(false); }
+ function logout() {
+  // Delete the cookie
+  document.cookie = `${AUTH_SESSION_KEY}=; max-age=0; path=/`;
+  document.getElementById('authPass').value = '';
+  setAppVisible(false);
+}
   document.getElementById('authBtn').addEventListener('click', attemptAuth);
   document.getElementById('authPass').addEventListener('keydown', (e) => { if (e.key === 'Enter') attemptAuth(); });
   document.getElementById('logoutBtn').addEventListener('click', logout);
@@ -2861,14 +2873,3 @@
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
