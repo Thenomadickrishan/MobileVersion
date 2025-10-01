@@ -1,0 +1,2874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>JP–EN Learn & Quiz (Protected • Auto Kana + Paged Learning)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root{
+    --bg:#fbfdff;
+    --bg2:#f7fbff;
+    --panel:#ffffff;
+    --card:#ffffff;
+    --text:#0f172a;
+    --muted:#64748b;
+    --accent1:#6d83f2;
+    --accent2:#22c5dc;
+    --accent3:#10b981;
+    --good:#16a34a;
+    --bad:#ef4444;
+    --warn:#f59e0b;
+    --chip:#f6f8ff;
+    --chip-h:#eef4ff;
+    --chip-sel:#38bdf8;
+    --border:#e6ecf5;
+    --shadow: 0 18px 40px rgba(2,6,23,0.12), 0 3px 12px rgba(2,6,23,0.06);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 20% -10%, rgba(99,102,241,0.14), transparent 60%),
+      radial-gradient(1000px 500px at 100% 0%, rgba(6,182,212,0.12), transparent 60%),
+      linear-gradient(135deg, var(--bg) 0%, var(--bg2) 35%, #f3f7ff 100%);
+    color:var(--text); font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  }
+  header{
+    position:relative;
+    padding:28px 20px 24px;
+    background:
+      radial-gradient(900px 300px at 10% -10%, rgba(109,131,242,0.30), transparent 55%),
+      radial-gradient(700px 240px at 90% -10%, rgba(34,197,220,0.25), transparent 60%),
+      linear-gradient(90deg, #eef3ff, #e6fbff);
+    border-bottom:1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+  .hero{ max-width:1200px; margin:0 auto; display:flex; align-items:center; gap:18px; flex-wrap:wrap }
+  .badge{ display:inline-block; padding:6px 10px; border-radius:999px; font-weight:900; color:#0f172a; background:linear-gradient(90deg, #e0e7ff, #ccfbf1); border:1px solid rgba(2,6,23,.08) }
+  h1{margin:8px 0 4px 0; font-size:28px; letter-spacing:.5px; font-weight:900}
+  .sub{margin-top:4px; color:#334155; font-weight:600}
+  .greet{ margin-top:10px; color:#0f172a; background:#ffffffd0; border:1px solid var(--border); padding:10px 12px; border-radius:12px; font-weight:700 }
+  .code-name{margin-top:6px; font-weight:900; color:#0f172a}
+  .logout-wrap{margin-left:auto}
+  .logout-btn{ background:#fee2e2; color:#7f1d1d; border:1px solid #fecaca; border-radius:10px; padding:8px 12px; font-weight:900; cursor:pointer }
+  main{max-width:1200px; margin:0 auto; padding:18px}
+  .tabs{ display:flex; gap:8px; flex-wrap:wrap; margin:10px 0 16px 0 }
+  .tab-btn{ border:none; cursor:pointer; border-radius:999px; padding:10px 14px; font-weight:900; background:#eef2ff; color:#1e3a8a; border:1px solid var(--border); transition: transform .06s ease, box-shadow .1s ease, background .1s ease }
+  .tab-btn:hover{ box-shadow: 0 8px 18px rgba(99,102,241,0.12), 0 2px 6px rgba(2,6,23,0.06) }
+  .tab-btn.active{ background:linear-gradient(90deg, var(--accent1), var(--accent2)); color:white }
+  .panel{ background:var(--panel); border:1px solid var(--border); border-radius:18px; padding:16px; margin-bottom:18px; box-shadow: var(--shadow) }
+  .flex{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+  label{font-size:14px; color:#334155; font-weight:700; display:flex; flex-direction:column; gap:6px}
+  select, input[type="number"], input[type="text"], input[type="password"], input[type="checkbox"]{ background:#ffffff; color:#0f172a; border:1px solid var(--border); padding:10px 12px; border-radius:12px; font-weight:700 }
+  button{ border:none; cursor:pointer; border-radius:12px; padding:11px 16px; font-weight:900; letter-spacing:.2px; transition: transform .06s ease, filter .1s ease, box-shadow .1s ease, background .1s ease }
+  button:hover{ box-shadow: 0 8px 18px rgba(99,102,241,0.12), 0 2px 6px rgba(2,6,23,0.06) }
+  button:active{ transform: translateY(1px) }
+  .btn-prim{background:linear-gradient(90deg, var(--accent1), var(--accent2)); color:white}
+  .btn-sec{background:#f1f5f9; color:#334155; border:1px solid var(--border)}
+  .btn-good{background:linear-gradient(90deg,#16a34a,#22c55e); color:#03210e}
+  .btn-warn{background:linear-gradient(90deg,#f59e0b,#fbbf24); color:#2b1802}
+  .btn-danger{background:linear-gradient(90deg,#ef4444,#f87171); color:#2b0b0b}
+  .btn-ghost{background:transparent; color:#1e40af; border:1px dashed var(--border)}
+  .pill{ display:inline-block; padding:6px 10px; font-size:12px; font-weight:900; border-radius:999px; color:white; background:linear-gradient(90deg,var(--accent1),var(--accent2)); border:1px solid rgba(255,255,255,.5) }
+  .muted{color:#64748b}
+  .hl{ background:#eef6ff; border:1px solid var(--border); padding:10px 12px; border-radius:12px; color:#1e40af; font-weight:700 }
+  .quiz-head, .learn-head{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:10px 12px; background:linear-gradient(90deg, rgba(109,131,242,0.12), rgba(34,197,220,0.10)); border:1px solid var(--border); border-radius:12px }
+  .timer{font-weight:900; color:#2563eb}
+  .question{ margin-top:14px; padding:12px; border:1px dashed var(--border); border-radius:14px; background:linear-gradient(180deg, #ffffff, #f8fbff) }
+  .qtitle{font-size:20px; font-weight:700; white-space:nowrap} /* keep question on one row */
+  .kana{color:#1e3a8a; font-weight:800; margin-left:8px}
+  .choices{display:grid; gap:10px; margin-top:10px; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)) }
+  .choice{ display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; background:var(--chip); border:1px solid var(--border); color:#0f172a; font-weight:600; transition: transform .06s ease, background .1s ease, border-color .1s ease, box-shadow .1s ease }
+  .choice:hover{ transform: translateY(-1px); background:var(--chip-h); box-shadow:0 2px 10px rgba(99,102,241,.08) }
+  .choice .dot{ width:18px; height:18px; border-radius:50%; border:3px solid #94a3b8; background:transparent; flex:0 0 auto }
+  .choice.active{ border-color:var(--chip-sel); box-shadow:0 0 0 2px rgba(56,189,248,0.25) inset }
+  .choice.active .dot{ border-color: var(--chip-sel); background: var(--chip-sel) }
+  .explain{ margin-top:6px; color:#334155; font-size:13px }
+  .result-ok{ color:var(--good); font-weight:900 }
+  .result-bad{ color:var(--bad); font-weight:900 }
+  .review-card{ background:#f7fbff; border:1px solid var(--border); border-radius:12px; padding:10px; margin-top:10px }
+  .bar{ height:12px; background:#f1f5f9; border-radius:999px; border:1px solid var(--border); overflow:hidden }
+  .bar > div{height:100%; background:linear-gradient(90deg,#22c55e,#06b6d4)}
+  .footer{color:#475569; font-size:12px; margin-top:8px}
+  .charts{ display:grid; gap:14px; grid-template-columns: 1fr 1fr }
+  @media (max-width: 1000px){ .charts{grid-template-columns: 1fr} }
+  .chart-card{ background:linear-gradient(180deg,#ffffff,#f8fbff); border:1px solid var(--border); border-radius:12px; padding:10px; box-shadow: var(--shadow) }
+  .chart-title{margin:0 0 6px 0; font-weight:800; color:#111827}
+  .canvas-wrap{width:100%; height:200px}
+  canvas{width:100%; height:100%}
+  .study-card{ margin-top:12px; padding:18px; border:1px solid var(--border); border-radius:16px; background:linear-gradient(180deg,#ffffff,#f8fbff); box-shadow: var(--shadow) }
+  .study-title{ font-size:22px; font-weight:900; color:#111827; display:flex; align-items:center; gap:8px }
+  .study-english{ margin-top:8px; font-size:16px; color:#0f172a; font-weight:800 }
+  .study-controls{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px }
+  .toggle-on{ filter: saturate(1.1) contrast(1.05) }
+  .label-inline{ font-size:13px; color:#334155; font-weight:800; margin-left:4px }
+  .star.active{ color:#f59e0b; }
+  .known.active{ color:#16a34a; }
+  .learn-list{ margin-top:14px; border:1px solid var(--border); border-radius:12px; overflow:hidden }
+  .learn-row{ display:grid; grid-template-columns: 1fr 1.2fr auto; gap:10px; align-items:center; padding:10px 12px; border-bottom:1px solid var(--border); background:#fff }
+  .learn-row:nth-child(odd){ background:#fbfdff }
+  .learn-row:last-child{ border-bottom:none }
+  .row-actions button{ margin-left:6px }
+  .hide-en .en-cell { filter: blur(7px); }
+  .grid{ display:grid; gap:12px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+  .quiz-card{ background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow: var(--shadow) }
+  table { width:100%; border-collapse:collapse; margin-top:10px }
+  th, td { border:1px solid var(--border); padding:6px 8px; text-align:center }
+  th { background:var(--bg2) }
+
+  /* Auth (centered, polished) */
+  #authGate{
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    padding:24px;
+    background:
+      radial-gradient(900px 350px at 10% -10%, rgba(109,131,242,0.20), transparent 55%),
+      radial-gradient(800px 300px at 100% -10%, rgba(34,197,220,0.18), transparent 60%),
+      linear-gradient(135deg, #f7fbff, #eef4ff);
+  }
+  .auth-card{
+    width:100%; max-width:460px;
+    background:linear-gradient(180deg,#ffffff,#f7fbff);
+    border:1px solid var(--border); border-radius:16px; box-shadow: var(--shadow);
+    padding:20px 18px; text-align:center;
+  }
+  .auth-badge{ display:inline-block; padding:6px 10px; border-radius:999px; font-weight:900; color:#0f172a; background:linear-gradient(90deg,#e0e7ff,#ccfbf1); border:1px solid rgba(2,6,23,.08) }
+  .auth-title{ margin:10px 0 6px 0; font-size:22px; font-weight:900; color:#0f172a }
+  .auth-sub{ color:#334155; font-weight:600; margin-bottom:12px }
+  .auth-row{ display:flex; gap:8px; align-items:center; justify-content:center }
+  .auth-row input{ flex:1; min-width:0 }
+  .auth-error{ display:none; color:#b91c1c; background:#fee2e2; border:1px solid #fecaca; padding:6px 10px; border-radius:10px; font-weight:800; margin-top:10px }
+  .auth-footer{ margin-top:12px; color:#64748b; font-size:12px }
+
+  /* Session warning overlay */
+  #sessionWarning{
+    position:fixed; inset:0; background:rgba(0,0,0,0.5);
+    display:none; align-items:center; justify-content:center; z-index:9999;
+  }
+  #sessionWarning .warn-modal{
+    background:#fff; border:1px solid var(--border); border-radius:12px;
+    padding:16px; box-shadow:var(--shadow);
+    max-width:420px; width:calc(100% - 40px); text-align:center;
+  }
+  #sessionWarning .warn-modal h3{ margin:0 0 8px 0; font-weight:900; }
+  #sessionWarning .warn-modal p{ margin:0 0 10px 0; color:var(--text); }
+
+  /* Hide Romaji toggling in quiz areas */
+  #quizarea.hide-romaji .romaji,
+  #megaQuizarea.hide-romaji .romaji { display:none; }
+
+  /* Inline romaji and kana in question (one row) */
+  .qtitle .romaji { display:inline; font-size:22px; font-weight:700; margin-left:8px; }
+  .qtitle .kana  { display:inline; font-size:20px; font-weight:700; color:#1e3a8a; margin-left:6px; }
+  .qtitle .romaji strong { font-weight:inherit; }
+
+ /* FIXED: Romaji + Kana inline in options */
+  .choice .romaji { display:inline; font-size:18px; font-weight:600; margin-right:6px; }
+  .choice .kana  { display:inline; font-size:18px; font-weight:700; color:#1e3a8a; }
+  .choice .romaji strong { font-weight:inherit; }
+.jp-stacked {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+.jp-stacked .romaji {
+  font-size: 16px;
+  font-weight: 400;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.1;
+}
+.jp-stacked .kana {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin: 0;
+  line-height: 1.1;
+}
+</style>
+</head>
+<body>
+
+
+<!-- AUTH -->
+<div id="authGate">
+  <div class="auth-card">
+    <div class="auth-badge">Secure Access</div>
+    <h2 class="auth-title">Welcome to JP–EN Learn & Quiz</h2>
+    <p class="auth-sub">Enter the access password to continue.</p>
+    <div class="auth-row">
+      <input id="authPass" type="password" placeholder="Password" autocomplete="current-password" />
+      <button id="authBtn" class="btn-prim">Enter</button>
+    </div>
+    <div id="authError" class="auth-error">Invalid password. Please try again.</div>
+    <div class="auth-footer">Protected by Krishan Kumar Jha • © All rights reserved.</div>
+  </div>
+</div>
+
+
+<!-- APP -->
+<div id="app" style="display:none">
+  <header>
+    <div class="hero">
+      <div style="flex:1">
+        <span class="badge">Explore • Learn • Master • 日本語</span>
+        <h1>Hello, Folks 👋</h1>
+        <div class="sub">Embark on your journey to learn Japanese—vocabulary, kana, and quizzes.</div>
+        <div class="greet">Learn vocabulary, kana, and track your progress. がんばって!</div>
+        <div class="code-name">Developer: Krishan Kumar Jha </div>
+        <div class="code-name">Sugggestions/Queries? 🤔 </div>
+        <div class="code-name">
+  <a href="https://www.linkedin.com/in/KRISHAN-RS" target="_blank" style="display:inline-flex;align-items:center;text-decoration:none;font-weight:900;color:#0a66c2;">
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" alt="LinkedIn" width="24" height="24" style="margin-right:8px;vertical-align:middle;">
+    Contact me on LinkedIn
+  </a>
+</div>
+      </div>
+      <div class="logout-wrap">
+        <button id="logoutBtn" class="logout-btn" title="Clear access">Logout</button>
+      </div>
+    </div>
+  </header>
+
+
+  <main>
+    <div class="tabs">
+      <button id="tabLearn" class="tab-btn active">Learn Vocab</button>
+      <button id="tabQuiz" class="tab-btn">Vocab Quiz</button>
+      <button id="tabMega" class="tab-btn">Mega Quiz</button>
+      <button id="tabHira" class="tab-btn">Learn Hiragana</button>
+      <button id="tabKata" class="tab-btn">Learn Katakana</button>
+      <button id="tabKanaQuiz" class="tab-btn">Kana Quiz</button>
+    </div>
+
+
+    <!-- LEARN Vocab -->
+    <section id="panelLearn">
+      <div class="panel">
+        <div class="flex">
+          <div class="pill">Learn Mode</div>
+          <div class="muted">Study vocabulary in 10 blocks with pagination (5 pages per block). Romaji + auto Kana.</div>
+        </div>
+        <div class="search-wrap">
+          <label>Quick Find in All Blocks
+            <input id="learnGlobalSearch" type="text" placeholder="Search Romaji or English..." />
+          </label>
+          <button id="learnSearchBtn" class="btn-sec">Search</button>
+          <button id="learnClearSearchBtn" class="btn-ghost">Clear</button>
+        </div>
+        <div class="flex" style="margin-top:10px">
+          <label>Choose Block
+            <select id="learnBlockSelect"></select>
+          </label>
+          <div id="learnBlockMeta" class="info-chip">Block size: — • Preview: —</div>
+          <button id="openBlockBtn" class="btn-prim">Open Selected Block</button>
+        </div>
+      </div>
+
+
+      <div id="learnStudyArea" style="display:none">
+        <div class="panel">
+          <div class="learn-head">
+            <span class="pill">Learn</span>
+            <span>Block <span id="learnBlockNum">1</span> / 10</span>
+            <span class="info-chip">Items on page: <span id="learnPageCount">0</span></span>
+
+
+            <div class="pager">
+              <span><strong>Page</strong></span>
+              <select id="learnPageSelect">
+                <option value="1">1 / 5</option><option value="2">2 / 5</option><option value="3">3 / 5</option><option value="4">4 / 5</option><option value="5">5 / 5</option>
+              </select>
+              <button id="learnNextPageBtn" class="btn-sec">Next Page →</button>
+              <button id="learnBackBtn" class="btn-sec">Back to Selector</button>
+            </div>
+          </div>
+
+
+          <div class="study-card">
+            <div class="study-title" id="learnPrompt">word</div>
+            <div class="study-english" id="learnEnglish">meaning</div>
+            <div class="study-controls">
+              <button id="btnPrev" class="btn-sec">← Prev</button>
+              <button id="btnNext" class="btn-sec">Next →</button>
+              <button id="btnShuffle" class="btn-ghost">Shuffle</button>
+              <button id="btnHideEn" class="btn-ghost">Hide English</button>
+              <button id="btnSpeakJa" class="btn-prim">Speak JP</button>
+              <button id="btnSpeakEn" class="btn-prim">Speak EN</button>
+              <button id="btnStar" class="btn-warn star">★ Star</button>
+            </div>
+            <div class="bar" style="margin-top:10px"><div id="learnBar" style="width:0%"></div></div>
+            <div class="muted" style="margin-top:6px">Progress: <span id="learnProgressText">0 / 0</span></div>
+          </div>
+
+
+          <div class="flex" style="margin-top:10px">
+            <label><input type="checkbox" id="filterStarred" /> <span class="label-inline">Starred only</span></label>
+            <label><input type="checkbox" id="toggleListHideEn" /> <span class="label-inline">Blur English in List</span></label>
+            <label>Search in Page
+              <input id="learnBlockSearch" type="text" placeholder="Search this page..." />
+            </label>
+            <button id="btnResetFilters" class="btn-ghost">Reset Filters</button>
+          </div>
+
+
+          <div class="learn-list" id="learnList"></div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- TAKE QUIZ (WORDS) -->
+    <section id="panelQuiz" style="display:none">
+      <div id="menu">
+        <div class="panel">
+          <div class="flex">
+            <label>Direction
+              <select id="direction">
+                <option value="jp-en">Japanese → English</option>
+                <option value="en-jp">English → Japanese</option>
+              </select>
+            </label>
+            <label>Options per question
+              <input id="optCount" type="number" min="3" max="6" value="4" />
+            </label>
+            <button id="regenBtn" class="btn-prim">Generate 10 quizzes</button>
+            <span id="statsFilterInfo" class="info-chip" style="margin-left:auto">Stats filter: —</span>
+          </div>
+          <div class="footer">Words are divided into 10 equal quizzes; question order reshuffles on start.</div>
+        </div>
+
+
+        <div class="grid" id="quizGrid"></div>
+
+
+        <div class="panel">
+          <h3 class="chart-title">Stats (Filtered by current Direction + Options)</h3>
+          <div id="stats">No attempts yet.</div>
+          <div class="charts" style="margin-top:10px">
+            <div class="chart-card">
+              <div class="chart-title">Overall (last 50 attempts in filter)</div>
+              <div class="canvas-wrap"><canvas id="chartOverall"></canvas></div>
+            </div>
+            <div class="chart-card">
+              <div class="chart-title">By Quiz (Avg % per Quiz No., in filter)</div>
+              <div class="canvas-wrap"><canvas id="chartByQuiz"></canvas></div>
+            </div>
+          </div>
+          <div class="flex" style="margin-top:10px">
+            <button id="resetStatsBtn" class="btn-danger">Reset Stats</button>
+            <button id="exportStatsBtn" class="btn-sec">Export Stats</button>
+            <input id="importFile" type="file" accept="application/json" />
+            <button id="importStatsBtn" class="btn-sec">Import Stats</button>
+          </div>
+        </div>
+      </div>
+
+
+      <div id="quizarea" style="display:none">
+        <div class="panel">
+          <div class="quiz-head">
+            <span class="pill" id="pillDir">JP → EN</span>
+            <span>Quiz <span id="pillQuizNum">1</span> / 10</span>
+            <span>Elapsed: <span class="timer" id="timer">0.0s</span></span>
+            <label style="margin-left:auto; display:flex; align-items:center; gap:6px; font-weight:700;">
+              <input type="checkbox" id="quizHideRomaji" />
+              <span>Hide Romaji</span>
+            </label>
+          </div>
+          <div id="questions"></div>
+          <div class="flex" style="margin-top:10px">
+            <button id="submitBtn" class="btn-good">Submit</button>
+            <button id="cancelBtn" class="btn-sec">Cancel</button>
+          </div>
+          <div class="footer">Single-answer MCQ. Synonyms exist; one is picked as the correct label, and shown in review.</div>
+        </div>
+      </div>
+
+
+      <div id="resultarea" style="display:none">
+        <div class="panel">
+          <h3>Results</h3>
+          <div style="margin-top:6px">Score: <span id="score"></span></div>
+          <div class="bar" style="margin:8px 0"><div id="scoreBar" style="width:0%"></div></div>
+          <div>Time: <span id="timeTaken"></span></div>
+          <div id="review" style="margin-top:10px"></div>
+          <div class="flex" style="margin-top:10px">
+            <button id="backBtn" class="btn-sec">Back to Menu</button>
+            <button id="regenBtn2" class="btn-warn">Generate 10 new quizzes</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- MEGA QUIZ (WORDS) -->
+    <section id="panelMega" style="display:none">
+      <div id="megaMenu">
+        <div class="panel">
+          <div class="flex">
+            <label>Direction
+              <select id="megaDirection">
+                <option value="jp-en">Japanese → English</option>
+                <option value="en-jp">English → Japanese</option>
+              </select>
+            </label>
+            <label>Options per question
+              <input id="megaOptCount" type="number" min="3" max="6" value="4" />
+            </label>
+            <button id="megaGenBtn" class="btn-prim">Generate 10 Mega Quizzes</button>
+            <span id="megaStatsFilterInfo" class="info-chip" style="margin-left:auto">Stats filter: —</span>
+          </div>
+          <div class="footer">Each Mega Quiz has 50 questions from cumulative blocks (1; 1+2; ...; 1–10).</div>
+        </div>
+
+
+        <div class="grid" id="megaQuizGrid"></div>
+
+
+        <div class="panel">
+          <h3 class="chart-title">Stats (Filtered by current Direction + Options)</h3>
+          <div id="megaStats">No attempts yet.</div>
+          <div class="charts" style="margin-top:10px">
+            <div class="chart-card">
+              <div class="chart-title">Overall (last 50 attempts in filter)</div>
+              <div class="canvas-wrap"><canvas id="megaChartOverall"></canvas></div>
+            </div>
+            <div class="chart-card">
+              <div class="chart-title">By Mega Quiz (Avg % in filter)</div>
+              <div class="canvas-wrap"><canvas id="megaChartByQuiz"></canvas></div>
+            </div>
+          </div>
+          <div class="flex" style="margin-top:10px">
+            <button id="megaResetStatsBtn" class="btn-danger">Reset Stats</button>
+            <button id="megaExportStatsBtn" class="btn-sec">Export Stats</button>
+            <input id="megaImportFile" type="file" accept="application/json" />
+            <button id="megaImportStatsBtn" class="btn-sec">Import Stats</button>
+          </div>
+        </div>
+      </div>
+
+
+      <div id="megaQuizarea" style="display:none">
+        <div class="panel">
+          <div class="quiz-head">
+            <span class="pill" id="megaPillDir">JP → EN</span>
+            <span>Mega Quiz <span id="megaPillQuizNum">1</span> / 10</span>
+            <span>Elapsed: <span class="timer" id="megaTimer">0.0s</span></span>
+            <label style="margin-left:auto; display:flex; align-items:center; gap:6px; font-weight:700;">
+              <input type="checkbox" id="megaHideRomaji" />
+              <span>Hide Romaji</span>
+            </label>
+          </div>
+          <div id="megaQuestions"></div>
+          <div class="flex" style="margin-top:10px">
+            <button id="megaSubmitBtn" class="btn-good">Submit</button>
+            <button id="megaCancelBtn" class="btn-sec">Cancel</button>
+          </div>
+          <div class="footer">Single-answer MCQ. Synonyms exist; one is picked as the correct label, and shown in review.</div>
+        </div>
+      </div>
+
+
+      <div id="megaResultarea" style="display:none">
+        <div class="panel">
+          <h3>Results</h3>
+          <div style="margin-top:6px">Score: <span id="megaScore"></span></div>
+          <div class="bar" style="margin:8px 0"><div id="megaScoreBar" style="width:0%"></div></div>
+          <div>Time: <span id="megaTimeTaken"></span></div>
+          <div id="megaReview" style="margin-top:10px"></div>
+          <div class="flex" style="margin-top:10px">
+            <button id="megaBackBtn" class="btn-sec">Back to Menu</button>
+            <button id="megaGenBtn2" class="btn-warn">Generate 10 new Mega Quizzes</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- LEARN HIRAGANA (Enhanced like Learn Words) -->
+    <section id="panelHira" style="display:none">
+      <div class="panel">
+        <div class="flex">
+          <div class="pill">Learn Hiragana</div>
+          <div class="muted">Practice basic Hiragana. Include dakuten ( ゙) and handakuten ( ゚) for voiced/half-voiced sounds (e.g., た→だ, は→ば/ぱ).</div>
+        </div>
+        <div class="flex" style="margin-top:10px">
+          <label><input type="checkbox" id="hiraDakuten" /> Include Dakuten ( ゙)</label>
+          <label><input type="checkbox" id="hiraHandakuten" /> Include Handakuten ( ゚)</label>
+          <label>Quick Search
+            <input id="hiraSearch" type="text" placeholder="Search romaji or kana..." />
+          </label>
+        </div>
+
+
+        <div class="study-card">
+          <div class="study-title" id="hiraStudyTitle">—</div>
+          <div class="study-english" id="hiraStudyRomaji">—</div>
+          <div class="study-controls">
+            <button id="hiraPrev" class="btn-sec">← Prev</button>
+            <button id="hiraNext" class="btn-sec">Next →</button>
+            <button id="hiraShuffle" class="btn-ghost">Shuffle</button>
+            <button id="hiraHideRomaji" class="btn-ghost">Hide Romaji</button>
+            <button id="hiraSpeak" class="btn-prim">Speak Kana</button>
+            <button id="hiraStar" class="btn-warn star">★ Star</button>
+            <button id="hiraKnown" class="btn-good known">✓ Known</button>
+          </div>
+          <div class="bar" style="margin-top:10px"><div id="hiraBar" style="width:0%"></div></div>
+          <div class="muted" style="margin-top:6px">Progress: <span id="hiraProgressText">0 / 0</span></div>
+        </div>
+
+
+        <div class="flex" style="margin-top:10px">
+          <label><input type="checkbox" id="hiraFilterStarred" /> <span class="label-inline">Starred only</span></label>
+          <label><input type="checkbox" id="hiraFilterUnknown" /> <span class="label-inline">Unknown only</span></label>
+          <label><input type="checkbox" id="hiraListHideRomaji" /> <span class="label-inline">Blur Romaji in List</span></label>
+          <label>Search in Page
+            <input id="hiraPageSearch" type="text" placeholder="Filter shown items..." />
+          </label>
+          <button id="hiraResetFilters" class="btn-ghost">Reset Filters</button>
+        </div>
+
+
+        <div id="hiraLearnList" class="learn-list" style="margin-top:10px"></div>
+      </div>
+    </section>
+
+
+    <!-- LEARN KATAKANA (Enhanced like Learn Words) -->
+    <section id="panelKata" style="display:none">
+      <div class="panel">
+        <div class="flex">
+          <div class="pill">Learn Katakana</div>
+          <div class="muted">Practice basic Katakana. Include dakuten ( ゙) and handakuten ( ゚) for voiced/half-voiced sounds.</div>
+        </div>
+        <div class="flex" style="margin-top:10px">
+          <label><input type="checkbox" id="kataDakuten" /> Include Dakuten ( ゙)</label>
+          <label><input type="checkbox" id="kataHandakuten" /> Include Handakuten ( ゚)</label>
+          <label>Quick Search
+            <input id="kataSearch" type="text" placeholder="Search romaji or kana..." />
+          </label>
+        </div>
+
+
+        <div class="study-card">
+          <div class="study-title" id="kataStudyTitle">—</div>
+          <div class="study-english" id="kataStudyRomaji">—</div>
+          <div class="study-controls">
+            <button id="kataPrev" class="btn-sec">← Prev</button>
+            <button id="kataNext" class="btn-sec">Next →</button>
+            <button id="kataShuffle" class="btn-ghost">Shuffle</button>
+            <button id="kataHideRomaji" class="btn-ghost">Hide Romaji</button>
+            <button id="kataSpeak" class="btn-prim">Speak Kana</button>
+            <button id="kataStar" class="btn-warn star">★ Star</button>
+            <button id="kataKnown" class="btn-good known">✓ Known</button>
+          </div>
+          <div class="bar" style="margin-top:10px"><div id="kataBar" style="width:0%"></div></div>
+          <div class="muted" style="margin-top:6px">Progress: <span id="kataProgressText">0 / 0</span></div>
+        </div>
+
+
+        <div class="flex" style="margin-top:10px">
+          <label><input type="checkbox" id="kataFilterStarred" /> <span class="label-inline">Starred only</span></label>
+          <label><input type="checkbox" id="kataFilterUnknown" /> <span class="label-inline">Unknown only</span></label>
+          <label><input type="checkbox" id="kataListHideRomaji" /> <span class="label-inline">Blur Romaji in List</span></label>
+          <label>Search in Page
+            <input id="kataPageSearch" type="text" placeholder="Filter shown items..." />
+          </label>
+          <button id="kataResetFilters" class="btn-ghost">Reset Filters</button>
+        </div>
+
+
+        <div id="kataLearnList" class="learn-list" style="margin-top:10px"></div>
+      </div>
+    </section>
+
+
+    <!-- KANA QUIZ -->
+    <section id="panelKanaQuiz" style="display:none">
+      <div class="panel">
+        <div class="flex">
+          <div class="pill">Kana Quiz</div>
+          <div class="muted">Choose Hiragana, Katakana, or Both; and direction (Kana ↔ Romaji). Only stats for the current combination will show.</div>
+        </div>
+        <div class="flex" style="margin-top:10px">
+          <label>Direction
+            <select id="kanaDirection">
+              <option value="kana-romaji">Kana → Romaji</option>
+              <option value="romaji-kana">Romaji → Kana</option>
+            </select>
+          </label>
+          <label>Script
+            <select id="kanaQuizScript">
+              <option value="hira">Hiragana</option>
+              <option value="kata">Katakana</option>
+              <option value="both">Both</option>
+            </select>
+          </label>
+          <label><input id="kanaQuizDakuten" type="checkbox" checked /> Include Dakuten ( ゙)</label>
+          <label><input id="kanaQuizHandakuten" type="checkbox" checked /> Include Handakuten ( ゚)</label>
+          <label>Options
+            <input id="kanaOptCount" type="number" min="3" max="6" value="4" />
+          </label>
+          <label>Questions
+            <input id="kanaQuestionCount" type="number" min="10" max="100" value="30" />
+          </label>
+          <button id="kanaGenBtn" class="btn-prim">Generate Kana Quiz</button>
+          <span id="kanaStatsFilterInfo" class="info-chip" style="margin-left:auto">Stats filter: —</span>
+        </div>
+      </div>
+
+
+      <div id="kanaQuizArea" style="display:none">
+        <div class="panel">
+          <div class="quiz-head">
+            <span class="pill" id="kanaPillDir">Kana → Romaji</span>
+            <span>Script: <span id="kanaPillScript">Hiragana</span></span>
+            <span>Elapsed: <span class="timer" id="kanaTimer">0.0s</span></span>
+          </div>
+          <div id="kanaQuestions"></div>
+          <div class="flex" style="margin-top:10px">
+            <button id="kanaSubmitBtn" class="btn-good">Submit</button>
+            <button id="kanaCancelBtn" class="btn-sec">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+
+      <div id="kanaResultArea" style="display:none">
+        <div class="panel">
+          <h3>Kana Results</h3>
+          <div style="margin-top:6px">Score: <span id="kanaScore"></span></div>
+          <div class="bar" style="margin:8px 0"><div id="kanaScoreBar" style="width:0%"></div></div>
+          <div>Time: <span id="kanaTimeTaken"></span></div>
+          <div id="kanaReview" style="margin-top:10px"></div>
+          <div class="flex" style="margin-top:10px">
+            <button id="kanaBackBtn" class="btn-sec">Back to Kana Menu</button>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="panel">
+        <h3 class="chart-title">Kana Stats (Filtered by current Direction + Script + Options)</h3>
+        <div id="kanaStats">No kana attempts yet.</div>
+        <div class="charts" style="margin-top:10px">
+          <div class="chart-card">
+            <div class="chart-title">Overall (last 50 attempts in filter)</div>
+            <div class="canvas-wrap"><canvas id="kanaChartOverall"></canvas></div>
+          </div>
+        </div>
+        <div class="flex" style="margin-top:10px">
+          <button id="kanaResetStatsBtn" class="btn-danger">Reset Kana Stats</button>
+          <button id="kanaExportStatsBtn" class="btn-sec">Export Kana Stats</button>
+          <input id="kanaImportFile" type="file" accept="application/json" />
+          <button id="kanaImportStatsBtn" class="btn-sec">Import Kana Stats</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- Session warning / countdown overlay -->
+<div id="sessionWarning">
+  <div class="warn-modal">
+    <h3>Session Expiring Soon</h3>
+    <p>Your session will expire due to inactivity in <strong><span id="sessionCountdown">60</span></strong> seconds.</p>
+    <button id="staySignedInBtn" class="btn-sec">Continue Session</button>
+  </div>
+</div>
+
+
+<script>
+  /* ===== AUTH ===== */
+  const AUTH_LOCAL_PASSWORD = "Jhakrishan2411";
+  const AUTH_REMOTE_URL = "";
+  const AUTH_SESSION_TTL_MS = 12 * 60 * 60 * 1000;
+  const AUTH_SESSION_KEY = "jpEnAuthSession_v1";
+
+  function setAppVisible(on){
+    document.getElementById('app').style.display = on ? '' : 'none';
+    document.getElementById('authGate').style.display = on ? 'none' : '';
+  }
+  function saveSession(){ localStorage.setItem(AUTH_SESSION_KEY, JSON.stringify({ exp: Date.now() + AUTH_SESSION_TTL_MS })); }
+  function hasValidSession(){
+    try { const raw = localStorage.getItem(AUTH_SESSION_KEY); if (!raw) return false; const obj = JSON.parse(raw); return obj && obj.exp && Date.now() < obj.exp; } catch { return false; }
+  }
+  async function sha256Hex(str){ const enc = new TextEncoder().encode(str); const buf = await crypto.subtle.digest("SHA-256", enc); return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join(''); }
+  async function checkRemotePassword(input){
+    if (!AUTH_REMOTE_URL) return null;
+    try {
+      const res = await fetch(AUTH_REMOTE_URL, { cache: "no-store" });
+      if (!res.ok) return null;
+      const data = await res.json();
+      const inputHash = await sha256Hex(input);
+      if (Array.isArray(data.allowed) && data.allowed.includes(input)) return true;
+      if (Array.isArray(data.allowedHashes) && data.allowedHashes.includes(inputHash)) return true;
+      if (typeof data.password === 'string' && input === data.password) return true;
+      if (typeof data.hash === 'string' && inputHash === data.hash.toLowerCase()) return true;
+      return false;
+    } catch { return null; }
+  }
+  async function attemptAuth(){
+    const pass = (document.getElementById('authPass').value || '').trim();
+    const err = document.getElementById('authError'); err.style.display = 'none';
+    let ok = null; if (AUTH_REMOTE_URL) ok = await checkRemotePassword(pass);
+    if (ok === null) ok = (pass === AUTH_LOCAL_PASSWORD);
+    if (ok) { saveSession(); setAppVisible(true); appInitOnce(); } else { err.style.display = ''; }
+  }
+  function logout(){ localStorage.removeItem(AUTH_SESSION_KEY); document.getElementById('authPass').value = ''; setAppVisible(false); }
+  document.getElementById('authBtn').addEventListener('click', attemptAuth);
+  document.getElementById('authPass').addEventListener('keydown', (e) => { if (e.key === 'Enter') attemptAuth(); });
+  document.getElementById('logoutBtn').addEventListener('click', logout);
+  window.addEventListener('load', () => { if (hasValidSession()) { setAppVisible(true); appInitOnce(); } else { setAppVisible(false); } });
+
+  /* ===== Utilities ===== */
+  function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+
+  // Romaji -> Kana conversion (for displaying kana with words)
+  const VOWELS = new Set(['a','i','u','e','o']);
+  const TRI = {
+    kya:'きゃ', kyu:'きゅ', kyo:'きょ',
+    gya:'ぎゃ', gyu:'ぎゅ', gyo:'ぎょ',
+    sha:'しゃ', shu:'しゅ', sho:'しょ',
+    sya:'しゃ', syu:'しゅ', syo:'しょ',
+    jya:'じゃ', jyu:'じゅ', jyo:'じょ',
+    ja:'じゃ',  ju:'じゅ',  jo:'じょ',
+    cha:'ちゃ', chu:'ちゅ', cho:'ちょ',
+    cya:'ちゃ', cyu:'ちゅ', cyo:'ちょ',
+    nya:'にゃ', nyu:'にゅ', nyo:'にょ',
+    hya:'ひゃ', hyu:'ひゅ', hyo:'ひょ',
+    bya:'びゃ', byu:'びゅ', byo:'びょ',
+    pya:'ぴゃ', pyu:'ぴゅ', pyo:'ぴょ',
+    mya:'みゃ', myu:'みゅ', myo:'みょ',
+    rya:'りゃ', ryu:'りゅ', ryo:'りょ',
+    dya:'ぢゃ', dyu:'ぢゅ', dyo:'ぢょ',
+    shi:'し', chi:'ち', tsu:'つ', dzu:'づ'
+  };
+  const DI = {
+    a:'あ', i:'い', u:'う', e:'え', o:'お',
+    ka:'か', ki:'き', ku:'く', ke:'け', ko:'こ',
+    ga:'が', gi:'ぎ', gu:'ぐ', ge:'げ', go:'ご',
+    sa:'さ', si:'し', su:'す', se:'せ', so:'そ',
+    za:'ざ', zi:'じ', zu:'ず', ze:'ぜ', zo:'ぞ',
+    ji:'じ',
+    ta:'た', ti:'ち', tu:'つ', te:'て', to:'と',
+    da:'だ', di:'ぢ', du:'づ', de:'で', do:'ど',
+    na:'な', ni:'に', nu:'ぬ', ne:'ね', no:'の',
+    ha:'は', hi:'ひ', fu:'ふ', he:'へ', ho:'ほ',
+    ba:'ば', bi:'び', bu:'ぶ', be:'べ', bo:'ぼ',
+    pa:'ぱ', pi:'ぴ', pu:'ぷ', pe:'ぺ', po:'ぽ',
+    ma:'ま', mi:'み', mu:'む', me:'め', mo:'も',
+    ya:'や', yu:'ゆ', yo:'よ',
+    ra:'ら', ri:'り', ru:'る', re:'れ', ro:'ろ',
+    wa:'わ', wi:'うぃ', we:'うぇ', wo:'を',
+    va:'ゔぁ', vi:'ゔぃ', vu:'ゔ', ve:'ゔぇ', vo:'ゔぉ',
+    fa:'ふぁ', fi:'ふぃ', fe:'ふぇ', fo:'ふぉ',
+    ca:'か', ci:'し', cu:'く', ce:'せ', co:'こ',
+    ja:'じゃ', ju:'じゅ', jo:'じょ'
+  };
+  function isConsonant(ch){ return ch >= 'a' && ch <= 'z' && !VOWELS.has(ch); }
+  function romajiToHiragana(input){
+    let s = String(input).toLowerCase().trim().replace(/[\u2019’]/g, "'").replace(/[~\s]/g,'');
+    let out = '', i = 0;
+    while (i < s.length){
+      const ch = s[i];
+      if (ch === '-') { out += 'ー'; i++; continue; }
+      if (i+1 < s.length && s[i] === s[i+1] && isConsonant(s[i]) && s[i] !== 'n'){ out += 'っ'; i++; continue; }
+      if (i+2 < s.length){ const tri = s.slice(i,i+3); if (TRI[tri]){ out += TRI[tri]; i+=3; continue; } }
+      if (i+1 < s.length){ const di = s.slice(i,i+2); if (DI[di]){ out += DI[di]; i+=2; continue; } }
+      if (ch === 'n'){
+        if (i === s.length - 1){ out += 'ん'; i++; continue; }
+        const nx = s[i+1];
+        if (nx === 'n'){ out += 'ん'; i++; continue; }
+        if (!VOWELS.has(nx) && nx !== 'y'){ out += 'ん'; i++; continue; }
+      }
+      if (VOWELS.has(ch)){ out += DI[ch]; i++; continue; }
+      if (/[0-9]/.test(ch)){ out += ch; i++; continue; }
+      out += ch; i++;
+    }
+    return out;
+  }
+  function hiraganaToKatakana(h){ let out=''; for (const ch of h){ const code = ch.codePointAt(0); out += (code >= 0x3041 && code <= 0x3096) ? String.fromCodePoint(code + 0x60) : ch; } return out; }
+  const LOAN_EN_HINTS = ['computer','stereo','handbag','piano','bell','salad','sandal','sandwich','jam','soft','screen','steak','concert','suit','suitcase','report','word processor','calendar','camera','elevator','register','cake','tennis','apartment','vase'];
+  const loanHintRegex = new RegExp(LOAN_EN_HINTS.map(x => x.replace(/[-/\\^$*+?.()|[$${}]/g,'\\$&')).join('|'));
+  function isKatakanaPreferred(romaji, enHintsText){
+    const s = String(romaji).toLowerCase();
+    if (s.includes('-')) return true;
+    if (/[v]/.test(s)) return true;
+    if (/(fa|fi|fe|fo|wi|we|che|she|je|tsa|tsi|tse|tso|kwa|kwi|kwe|kwo|gwa|gwi|gwe|gwo)/.test(s)) return true;
+    const e = String(enHintsText || '').toLowerCase();
+    if (loanHintRegex.test(e)) return true;
+    return false;
+  }
+  function preferredKana(romaji, enHintsText){ const hira = romajiToHiragana(romaji); return isKatakanaPreferred(romaji, enHintsText) ? hiraganaToKatakana(hira) : hira; }
+  function formatJPInlineSmart(romaji, enHintsText){
+    const r = escapeHtml(romaji);
+    const kana = preferredKana(romaji, enHintsText);
+    return `<span class="romaji"><strong>${r}</strong></span> <span class="kana">【${escapeHtml(kana)}】</span>`;
+  }
+  function formatJPStackedSmart(romaji, enHintsText){
+  const r = escapeHtml(romaji);
+  const kana = preferredKana(romaji, enHintsText);
+  return `<div class="jp-stacked"><div class="romaji"><strong>${r}</strong></div><div class="kana">【${escapeHtml(kana)}】</div></div>`;
+  }
+
+
+  /* ===== WORD LIST ===== */
+  const wordListRaw = `
+"a,  Oh!"
+"aa,Ah!"
+"aisatsu,greeting"
+"aida,between"
+"au, fit/ suit"
+"au,to meet"
+"aoi,blue"
+"akai,red"
+"akachan,baby/ newborn"
+"agaru,to go up"
+"akarui,light/ bright"
+"akanbou,baby/ newborn"
+"aki,autumn/ fall"
+"aku,open"
+"aku,empty/ has space"
+"akeru,to open"
+"ageru,to rise"
+"ageru,to give"
+"asa,morning"
+"asagohan,breakfast"
+"asatte,the day after tomorrow"
+"asanebou,a late riser"
+"ashi,leg/ foot"
+"aji,taste/ flavor"
+"ashita,tomorrow"
+"asu,tomorrow (polite)"
+"asoko,over there"
+"asobu,to play"
+"atatakai,warm"
+"atama,head"
+"ike,pond"
+"isha,doctor"
+"isu,chair"
+"isogashii,to be busy"
+"itai,to be painful"
+"ichi,one"
+"ichinichi,one day"
+"ichiban,No. 1/ the best/ the first"
+"itsu,when"
+"itsuka,the 5th day of the month/ 5 days"
+"issho,together"
+"itsutsu,five"
+"itsumo,always"
+"ima,now"
+"imi,meaning"
+"imouto,someone’s younger sister"
+"iya,not likable/ unpleasant"
+"iriguchi,entrance"
+"iru,need/ must have/ be required"
+"iru,to exist"
+"ireru,to insert/ to put in"
+"iro,color"
+"iroiro,various"
+"ue,top/ on/ above"
+"ushiro,back/ rear/ behind"
+"usui,thin"
+"uta,song"
+"utau,to sing"
+"osake,alcohol/ sake"
+"osara,plate"
+"ojisan,uncle"
+"ojiisan,grand father"
+"osu,to push"
+"osoi,late/ slow"
+"ocha,tea"
+"otearai,toilet/ lavatory"
+"otousan,father"
+"otouto,someone’s younger brother"
+"otoko,man"
+"otokonoko,boy"
+"ototoi,the day before yesterday"
+"ototoshi,the year before last"
+"otona,adult"
+"onaka,stomach"
+"onaji,same"
+"oniisan,someone’s elder brother"
+"oneesan,someone’s elder sister"
+"obasan,aunt"
+"obaasan,grandmother"
+"obentou,lunchbox"
+"oboeru,to memorize/ to remember"
+"omoi,heavy"
+"omoshiroi,interesting/ funny"
+"oyogu,to swim"
+"kasu,to lend"
+"kaze,wind"
+"kaze,a cold"
+"kazoku,family"
+"kata,person (polite)"
+"katakana,Katakana"
+"ichigatsu,January"
+"nigatsu,February"
+"sangatsu,March"
+"shigatsu,April"
+"gogatsu,May"
+"rokugatsu,June"
+"shichigatsu,July"
+"hachigatsu,August"
+"kugatsu,September"
+"juugatsu,October"
+"juuichigatsu,November"
+"juunigatsu,December"
+"gakkou,school"
+"kado,corner"
+"kanai,my wife"
+"kaban,bag"
+"kabin,vase"
+"kaburu,to put on a hat"
+"kami,paper"
+"kamera,camera"
+"kayoubi,Tuesday"
+"karai,hot/ spicy"
+"karada,body"
+"kariru,to borrow"
+"~garimasu,3rd person wants to"
+"karui,light (not heavy)"
+"karendaa, calendar"
+"guai,condition/ health"
+"kuuki,air/ atmosphere"
+"kuukou,airport"
+"kusa,grass"
+"kudasaru,to give (to me) respectful"
+"kubi,neck"
+"kumo,cloud"
+"kuraberu,to compare"
+"kureru,to give (to me) simple form"
+"kureru,to get dark/ to come to an end"
+"kun,suffix for young male (familiar)"
+"ke,hair or fur"
+"keikaku,plan"
+"keiken,experience"
+"keizai,finance/ economy"
+"keisatsu,police"
+"ke-ki,Cake"
+"kega,an injury"
+"keshiki,landscape"
+"keshigomu,an eraser"
+"geshuku,lodging"
+"kesshite,never"
+"koumuin,Government worker"
+"kokusai,international"
+"kokoro,core/heart"
+"goshujin,Your husband (respectful)"
+"koshou,trouble/ damage/ breakdown"
+"gozonji,knowing/ acquaintance"
+"kotae,response"
+"gochisou,a feast"
+"koto,thing/matter"
+"kotori,small/ bird"
+"konoaida,the other day/ recently"
+"konogoro,these days/ nowadays"
+"komakai,small/ fine"
+"gomi,rubbish"
+"komu,to be crowded"
+"kome,uncooked rice"
+"goranninaru,to see(respectful)"
+"korekara,after this"
+"kowai,frightening"
+"kowasu,to break"
+"kowareru,to be broken"
+"consa-to,Concert"
+"kondo,now/ next time"
+"shi,city"
+"ji,city"
+"shiai,match/ game"
+"shikata,method"
+"shikaru,to scold"
+"shiken,exam"
+"jiko,accident"
+"jishin,earthquake"
+"jidai,era"
+"shitagi,underwear"
+"shitaku,preparations"
+"shikkari,firmly/ steadily"
+"shippai,failure/ mistake"
+"jiten,dictionary"
+"shinamono,goods"
+"shibaraku,little while"
+"shima,island"
+"shimin,citizen"
+"jimusho,office"
+"shakai,society"
+"shachou,company president"
+"jama,intrusion/ obstacle"
+"jamu,jam"
+"jiyuu,freedom"
+"shuukan,custom/ manners"
+"jyuusho,an address/ a residence"
+"jyuudou,judo"
+"jyuubun,enough"
+"shusseki,attendance"
+"suiei,swimming"
+"suidou,water supply"
+"zuibun,very/ extremely"
+"suugaku,mathematic/ arithmetic"
+"su-tsu,suit"
+"su-tsuke-su,suitcase"
+"sugiru,to exceed"
+"suku,to become empty"
+"sukuri-n,screen"
+"sugoi,terrific"
+"susumu,to make progress"
+"sukkari,completely"
+"sutto,straight/ all of a sudden"
+"sute-ki,steak"
+"suteru,to throw away"
+"sutereo,Stereo"
+"suna,sand"
+"subarashii,wonderful"
+"suberu,to slide/ to slip"
+"sumi,corner/ nook"
+"sumu,to finish"
+"suri,a pickpocket"
+"suruto,then"
+"sou,really"
+"soudan,to discuss"
+"sodateru,to rear/ to bring up"
+"sotsugyou,graduation"
+"sofu,grandfather"
+"sofuto,soft"
+"sobo,grandmother"
+"sorede,because of that"
+"soreni,moreover"
+"sorehodo,to that extent"
+"sorosoro,gradually/ soon"
+"sonna,that kind of"
+"sonnani,so much/ like that"
+"taiin,leave hospital"
+"daigakusei,university student"
+"daiji,important/ valuable"
+"daitai,generally"
+"taitei,usually"
+"taipu,type/ style"
+"daibu,greatly"
+"taifuu,typhoon"
+"taoreru,to break down"
+"dakara,so/ therefore"
+"tashika,definite"
+"chuushajou,parking lot"
+"chiri,geography"
+"tsukamaeru,to seize"
+"tsuki,moon"
+"tsuku,to be attached"
+"tsukeru,to soak/ to pickle"
+"tsugou,circumstances"
+"tsutaeru,to report"
+"tsuzuku,continue/ last"
+"tsuzukeru,to continue/ go on"
+"tsutsumu,to wrap"
+"tsuma,wife"
+"tsumori,intention"
+"tsuru,to fish"
+"tsureru,to lead"
+"teinei,polite"
+"tekisuto,text/ text book"
+"tekitou,suitable"
+"dekirudake,as much as possible"
+"tetsudau,to assist"
+"tenisu,tenis"
+"tebukuro,glove"
+"tera,temple"
+"ten,point/ dot"
+"tenin,shop assistant"
+"tenkiyohou,weather forecast"
+"dentou,electric light"
+"denpou, telegram"
+"tenrankai,exhibition"
+"to,metropolitan"
+"dougu,tool/ means"
+"toutou,finally/ after all"
+"doubutsuen,zoo"
+"tooku,distant"
+"tooru,to go through"
+"atarashii,new"
+"achira,over there (polite)"
+"atsui,hot (air)"
+"atsui,thick"
+"ato,later/ after"
+"anata,you"
+"ani,older brother"
+"ane,older sister"
+"ano,that (over there)"
+"ano,well/ then"
+"apaato,apartment"
+"abiru,to take a shower"
+"abunai,dangerous"
+"amai,sweet"
+"amari,not so"
+"ame,rain"
+"arau,to wash"
+"aru,to be/ to exist"
+"aru,to possess"
+"aruku,to walk"
+"are,that one"
+"ii/ yoi,good"
+"iie,no"
+"iu,to say/ to tell"
+"ie,house/ home"
+"iku,to go"
+"ikutsu,how many/ how old"
+"ikura,how much"
+"uchi,home"
+"umareru,to be born"
+"umi,sea"
+"uru,to sell"
+"uwagi,coat/ jacket"
+"e,picture"
+"eiga,movie"
+"eigakan,cinema"
+"eigo,English language"
+"ee,Yes/ I see"
+"eki,station"
+"erebeeta,elevator"
+"en,Yen"
+"enpitsu,pencil"
+"o,Honorofix prefix"
+"oishii,tasty/ delicious"
+"ookii,big"
+" oozei,many people"
+"okaasan,my own mother"
+"okashi,confectionary/ cake"
+"okane,money"
+"okiru,to get up/ to stand up"
+"okiru,to put"
+"okusan,someone’s wife"
+"okuru,to send"
+"oriru,to get off"
+"owaru,to end"
+"ongaku,music"
+"onna,woman"
+"onnanoko,girl"
+"~kai,~times"
+"~kai,~floor"
+"gaikoku,foreign country"
+"gaikokujin,foreigner"
+"kaisha,company/ enterprise"
+"kaidan,stairs"
+"kaimono,shopping"
+"kau,to buy"
+"kaesu,to return an object"
+"kaeru,to return home"
+"kao,face"
+"kakaru,to take time/ money"
+"kagi,key"
+"kaku,to write"
+"gakusei,student"
+"~kagetsu,~ number of months"
+"kakeru,to wear"
+"kakeru,to make a phone call"
+"kasa,umbrella"
+"kawa,river"
+"~gawa,~side"
+"kawaii,cute/ pretty"
+"kanji,Kanji character"
+"ki, Spirit/ mood"
+"kikai,Opportunity"
+"Kiken,Danger"
+"kikoeru,to be heard"
+"kisha,steam train"
+"gijyutsu,Skill/ art/ technique"
+"kisetsu,season"
+"kisoku,regulations"
+"kitto,surely"
+"kinu,Silk"
+"kibishii,strict"
+"kibun,mood"
+"kimaru,to be decided"
+"kimi,You (informal)"
+"kimeru,to decide"
+"kimochi,feeling/ mood"
+"kimono,a kimono"
+"kyaku,guest/ customer"
+"kyuu,urgent"
+"kyuukou,speedy/ express"
+"kyouiku,education"
+"kyoukai,church"
+"kyousou,competition"
+"kyoumi,an interest"
+"kinjo,neighbourhood"
+"keredo/keredomo,however"
+"genin,source/ cause"
+"kenka,a quarrel"
+"kenkyuu,research"
+"kenkyuushitsu,laboratory"
+"kenbutsu,sightseeing"
+"ko,child"
+"kou,this way"
+"kougai,outskirts"
+"kougi,lecture"
+"kougyou,the manufacturing industry"
+"koukou,high school"
+"koukousei,high school students"
+"koujyou,factory"
+"kouchou,headmaster"
+"koutsuu,traffic/ transportation"
+"koudou,auditorium"
+"koutougakkou,High school (full word)"
+"conpu-ta-,Computer"
+"konya,tonight"
+"Saikin,nowadays"
+"saigo,last/ end"
+"saisho,beginning/ first"
+"saka,slope/ hill"
+"sagasu,to look for"
+"sagaru,to get down"
+"sakan,popular/ prosperous"
+"sageru,to lower"
+"sashiageru,to give (respectful)"
+"sakki,a little while ago"
+"sabishii,lonely"
+"saraigetsu,the month after next"
+"saraishuu,the week after next"
+"sarada,salad"
+"sawagu,to make noise/ to be excited"
+"sawaru,to touch"
+"sangyou,industry"
+"sandaru,sandal"
+"sandoicchi,sandwich"
+"zannen,disappointment"
+"shuppatsu,departure"
+"shumi,a hobby"
+"junbi,preparation"
+"shoukai,introduction"
+"shougakkou,elementary school"
+"shousetsu,novel"
+"shoutai,invitation"
+"shouchi,consentment"
+"shourai,future/ prospects"
+"shokuji,a meal"
+"shokuryouhin,groceries"
+"jyosei,woman"
+"shiraseru,to notify"
+"shiraberu,to investigate"
+"jinkou,population"
+"jinja,Shinto shrine"
+"shinsetsu,kindness"
+"shinpai,worries"
+"shinbunnsha,newspaper company"
+"seikatsu,life/ living"
+"seisan,production"
+"seiji,politics/ government"
+"seiyou,western countries"
+"sekai,the world"
+"seki,seat"
+"setsumei,explanation"
+"senaka,the back (of the body)"
+"zehi,without fail"
+"sewa,to look after"
+"sen,line"
+"zenzen,not at all (in negative sentence)"
+"sensou,war"
+"senpai,senior"
+"tasu,to add a number"
+"tazuneru, to visit"
+"tazuneru, to ask"
+"tadashii,correct"
+"tatami,a Tatami"
+"tateru,stand up/ put up"
+"tateru,to build"
+"tatoeba,for example"
+"tana,shelves"
+"tanoshimi,pleasure/ amusement"
+"tanoshimu,enjoy/ enjoy oneself"
+"tamani,occasionally"
+"tame,in order to"
+"dame,no good"
+"tariru,be sufficient"
+"dansei,man"
+"danbou,heating"
+"chi,blood"
+"chekku,check"
+"chikara,strengh/ power"
+"chittomo,not at all (in negative sentence)"
+"chan,familiar suffix usually for girls"
+"chuui,caution"
+"chuugakkou,junior high school"
+"chuusha,injection"
+"nakunaru,to disappear/ to get lost"
+"nakunaru,to die"
+"nageru,to throw away"
+"nasaru,to do (respectful)"
+"naru,sound/ ring"
+"narubeku,as much as possible"
+"naruhodo,Indeed/ really/ I see"
+"nareru,to grow accustomed to"
+"nioi,a smell"
+"nigai,bitter"
+"nikaidate,two storied"
+"nigeru,to escape"
+"nikki,diary"
+"nyuuin,be hospitalized"
+"nyuugaku,enter school or university"
+"niru,to be similar"
+"ninngyou,a doll"
+"nusumu,to steal"
+"nuru,to paint/ lacquer"
+"nureru,to get wet"
+"hakkiri,clearly"
+"hanami,cherry-blossom viewing"
+"hayashi,woods/ forest"
+"harau,to pay"
+"bangumi,television or radio program"
+"hantai,Opposition"
+"handobaggu,Handbag"
+"hi,day/ sun"
+"hi,fire"
+"piano,piano"
+"hieru,get cold/ feel chilly"
+"hikari,light"
+"hikaru,to shine"
+"hikidashi,drawer"
+"hikidasu,to draw out"
+"hige,a mustache/ a beard"
+"hikoujou,an airport"
+"hisashiburi,after a long time"
+"bijyutsukan,art gallery"
+"hijouni,extremely"
+"bikkuri,be surprised"
+"hikkosu,to move (house)"
+"hitsuyou,necessary"
+"hidoi,awful"
+"hiraku,to open an event"
+"betsu,different"
+"beru,bell"
+"hen,strange"
+"henji,reply"
+"boueki,trade"
+"housou,to broadcast"
+"houritsu,law"
+"boku,I (for male)"
+"hoshi,star"
+"hodo,extent"
+"hotondo,mostly"
+"homeru,praise/ speak well of"
+"honyaku,translation"
+"mairu,to go/ to come (humble form)"
+"makeru,to lose"
+"majime,serious"
+"mazu,first of all"
+"mataha,or/ otherwise"
+"meshiagaru,to eat (respectful)"
+"mezurashii,rare"
+"moushiageru,to say/ to tell (respectful)"
+"mousu,to be called/ to say (respectful)"
+"mousugu,soon"
+"moshi,if"
+"mochiron,of course"
+"mottomo,extremely"
+"modoru,to return/ to go back to"
+"momen,cotton"
+"morau,to receive"
+"mori,forest"
+"yaku,to bake/ to grill"
+"yakusoku,promise"
+"yakunitatsu,to be helpful"
+"yakeru,to burn/ to be roasted"
+"yasashii,kind"
+"yaseru,to become thin"
+"yatto,at last"
+"riyuu,reason"
+"riyou,utilization"
+"ryouhou,both sides"
+"ryokan,Japanese style hotel"
+"rusu,absence"
+"reibou,air conditioning"
+"rekishi,history"
+"reji,a register"
+"repo-to,report"
+"renraku,contact"
+"wa-puro,word processor"
+"wakasu,to boil/ to heat"
+"wakareru,to separate"
+"waku,to boil/ to grow hot"
+"wake,meaning/ reason"
+"wasuremono,lost article"
+"warau,to laugh/ to smile"
+"wariai,rate/ ratio/ percentage"
+"wareru,to break"
+`;
+
+
+  // Parse list
+  function parseWordList(text) {
+    const out = [];
+    const lines = text.split(/\r?\n/);
+    for (let raw of lines) {
+      if (!raw) continue;
+      let line = raw.trim();
+      if (!line) continue;
+      if (line.startsWith('"') && line.endsWith('"')) line = line.slice(1, -1);
+      const idx = line.indexOf(',');
+      if (idx < 0) continue;
+      let jp = line.slice(0, idx).trim();
+      let en = line.slice(idx + 1).trim();
+      if (!jp || !en) continue;
+      out.push({ jp, en });
+    }
+    return out;
+  }
+  function splitEnVariants(en) { return en.split('/').map(s => s.trim()).filter(Boolean); }
+  function normalizeJP(s) { return s.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[~\-–—'"!?,.:;(){}$]/g, '').replace(/\s+/g, ''); }
+  function normalizeEN(s) { return s.toLowerCase().replace(/[“”"‘’']/g, '').replace(/[!?,.:;(){}$-]/g, '').replace(/^\s*\b(to|a|an|the)\b\s+/g, '').replace(/\s+/g, '').trim(); }
+
+
+  const parsed = parseWordList(wordListRaw);
+  const jpMap = new Map(); // jpNorm -> { jpDisplay, enDisplayList[], enNormSet:Set }
+  for (const { jp, en } of parsed) {
+    const jpNorm = normalizeJP(jp);
+    if (!jpMap.has(jpNorm)) jpMap.set(jpNorm, { jpDisplay: jp.trim(), enDisplayList: [], enNormSet: new Set() });
+    const rec = jpMap.get(jpNorm);
+    const vars = splitEnVariants(en);
+    for (const v of vars) {
+      const enNorm = normalizeEN(v);
+      if (!enNorm) continue;
+      if (!rec.enDisplayList.includes(v)) rec.enDisplayList.push(v);
+      rec.enNormSet.add(enNorm);
+    }
+  }
+
+  // Build items list in alphabetical order (by romaji jpDisplay)
+  let items = Array.from(jpMap.values());
+  items.sort((a, b) => a.jpDisplay.localeCompare(b.jpDisplay, 'en', { sensitivity: 'base' }));
+
+  const enPoolMap = new Map();
+  for (const it of items) for (const enStr of it.enDisplayList) { const norm = normalizeEN(enStr); if (!enPoolMap.has(norm)) enPoolMap.set(norm, enStr); }
+  const enPoolUnique = Array.from(enPoolMap.values());
+  const jpDisplayMap = new Map(items.map(it => [it.jpDisplay, it]));
+
+
+  function shuffle(arr){ for (let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]] } return arr; }
+  function sample(arr, n){ const idxs=[...Array(arr.length).keys()]; shuffle(idxs); const out=[]; for(const i of idxs){ out.push(arr[i]); if(out.length>=n) break;} return out; }
+  function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
+  function pickNWithReplacement(indexes, n){ if (indexes.length>=n) return sample(indexes, n); const out=[]; if (!indexes.length) return out; while(out.length<n) out.push(indexes[Math.floor(Math.random()*indexes.length)]); return out; }
+
+
+  /* ===== Words: blocks and tabs ===== */
+  let quizSets = [];
+  function computeTenBlocks() {
+    quizSets = [];
+    const n = items.length;
+    const base = Math.floor(n / 10);
+    let start = 0;
+    for (let k = 0; k < 10; k++) {
+      const len = (k < 9) ? base : (n - start);
+      const end = Math.min(start + len, n);
+      const block = [];
+      for (let i = start; i < end; i++) block.push(i);
+      quizSets.push(block);
+      start = end;
+    }
+  }
+
+
+  function setActiveTab(name){
+    const isLearn = (name==='learn');
+    const isQuiz  = (name==='quiz');
+    const isMega  = (name==='mega');
+    const isHira  = (name==='hira');
+    const isKata  = (name==='kata');
+    const isKanaQ = (name==='kanaq');
+    document.getElementById('tabLearn').classList.toggle('active', isLearn);
+    document.getElementById('tabQuiz').classList.toggle('active', isQuiz);
+    document.getElementById('tabMega').classList.toggle('active', isMega);
+    document.getElementById('tabHira').classList.toggle('active', isHira);
+    document.getElementById('tabKata').classList.toggle('active', isKata);
+    document.getElementById('tabKanaQuiz').classList.toggle('active', isKanaQ);
+
+
+    document.getElementById('panelLearn').style.display = isLearn ? '' : 'none';
+    document.getElementById('panelQuiz').style.display  = isQuiz  ? '' : 'none';
+    document.getElementById('panelMega').style.display  = isMega  ? '' : 'none';
+    document.getElementById('panelHira').style.display  = isHira  ? '' : 'none';
+    document.getElementById('panelKata').style.display  = isKata  ? '' : 'none';
+    document.getElementById('panelKanaQuiz').style.display = isKanaQ ? '' : 'none';
+
+
+    if (isQuiz)  loadStatsFiltered();
+    if (isMega)  loadMegaStatsFiltered();
+    if (isHira)  renderHiraLearn();
+    if (isKata)  renderKataLearn();
+    if (isKanaQ) { loadKanaStatsFiltered(); renderKanaChartsFiltered(); }
+  }
+
+
+  /* ===== Take Quiz (words) ===== */
+  let activeQuizIndex = 0;
+  let activeDirection = 'jp-en';
+  let optCount = 4;
+  let activeQuestions = [];
+  let quizStartTime = 0;
+  let timerHandle = null;
+
+
+  function previewItems(indexes, limit = 3) {
+    if (!indexes.length) return '(empty)';
+    const picks = sample(indexes, Math.min(limit, indexes.length)).map(i => items[i].jpDisplay);
+    return picks.join(', ');
+  }
+
+
+  function generateTenQuizzes() {
+    activeDirection = document.getElementById('direction').value;
+    optCount = clamp(parseInt(document.getElementById('optCount').value) || 4, 3, 6);
+    computeTenBlocks();
+    renderQuizGrid();
+    populateLearnBlockSelect();
+    updateStatsFilterInfo();
+    loadStatsFiltered();
+  }
+
+
+  function renderQuizGrid() {
+    const grid = document.getElementById('quizGrid');
+    grid.innerHTML = '';
+    if (!quizSets.length) {
+      grid.innerHTML = '<div class="hl">Click “Generate 10 quizzes” to create a fresh set.</div>';
+      return;
+    }
+    const dirLabel = (document.getElementById('direction').value === 'jp-en') ? 'JP → EN' : 'EN → JP';
+    const total = items.length;
+    quizSets.forEach((set, i) => {
+      const card = document.createElement('div');
+      card.className = 'quiz-card';
+      const blockInfo = `${set.length} questions`;
+      let startIdx = set.length ? (set[0] + 1) : 0;
+      let endIdx = set.length ? (set[set.length - 1] + 1) : 0;
+      card.innerHTML = `
+        <h3>Quiz ${i + 1}</h3>
+        <div><span class="pill">${dirLabel}</span></div>
+        <div class="muted" style="margin-top:6px">Block size: ${blockInfo} • Options: ${optCount}</div>
+        <div class="muted" style="margin-top:6px">Source slice: #${startIdx} – #${endIdx} of ${total}</div>
+        <div class="muted" style="margin-top:6px">Preview: ${escapeHtml(previewItems(set))}</div>
+        <button class="btn-prim" style="margin-top:8px;width:100%">Start Quiz ${i + 1}</button>
+      `;
+      card.querySelector('button').addEventListener('click', () => startQuiz(i));
+      grid.appendChild(card);
+    });
+  }
+
+
+  function buildQuestion(it, direction, optN) {
+    if (direction === 'jp-en') {
+      const prompt = it.jpDisplay;
+      const correctLabel = it.enDisplayList.length ? it.enDisplayList[Math.floor(Math.random() * it.enDisplayList.length)] : '(?)';
+      const exclude = new Set(it.enDisplayList.map(normalizeEN));
+      exclude.add(normalizeEN(correctLabel));
+      const pool = enPoolUnique.filter(e => !exclude.has(normalizeEN(e)));
+      const distractors = sample(pool, Math.max(0, optN - 1));
+      const options = shuffle([correctLabel, ...distractors]).slice(0, optN);
+      const correctIndex = options.findIndex(o => normalizeEN(o) === normalizeEN(correctLabel));
+      return { promptSide: 'jp', prompt, options, correctIndex, correctAlt: it.enDisplayList.slice(), enHints: it.enDisplayList.join(' / ') };
+    } else {
+      const promptEn = it.enDisplayList.length ? it.enDisplayList[Math.floor(Math.random() * it.enDisplayList.length)] : '(?)';
+      const correctJP = it.jpDisplay;
+      const poolJP = items.filter(x => x.jpDisplay !== correctJP).map(x => x.jpDisplay);
+      const distractors = sample(poolJP, Math.max(0, optN - 1));
+      const options = shuffle([correctJP, ...distractors]).slice(0, optN);
+      const correctIndex = options.findIndex(o => o === correctJP);
+      return { promptSide: 'en', prompt: promptEn, options, correctIndex, correctAlt: [correctJP] };
+    }
+  }
+  function assembleQuestions(indexes, direction, optN) {
+    return indexes.map((i, idx) => {
+      const it = items[i];
+      const q = buildQuestion(it, direction, optN);
+      return { ...q, idx, selected: null };
+    });
+  }
+
+
+  function startQuiz(i) {
+    activeQuizIndex = i;
+    activeDirection = document.getElementById('direction').value;
+    optCount = clamp(parseInt(document.getElementById('optCount').value) || 4, 3, 6);
+
+    const randomizedIdxs = shuffle(quizSets[i].slice());
+    activeQuestions = assembleQuestions(randomizedIdxs, activeDirection, optCount);
+
+    document.getElementById('menu').style.display = 'none';
+    document.getElementById('resultarea').style.display = 'none';
+    document.getElementById('quizarea').style.display = '';
+
+    document.getElementById('pillDir').textContent = (activeDirection === 'jp-en') ? 'JP → EN' : 'EN → JP';
+    document.getElementById('pillQuizNum').textContent = (i + 1).toString();
+
+    renderQuestions();
+    quizStartTime = performance.now();
+    startTimer();
+  }
+
+
+  function renderQuestions() {
+    const wrap = document.getElementById('questions');
+    wrap.innerHTML = '';
+    activeQuestions.forEach((q, i) => {
+      const labelPrompt = (q.promptSide === 'jp') ? 'Japanese' : 'English';
+      const promptHTML = (q.promptSide === 'jp') ? `Q${i + 1}. ${labelPrompt}: ${formatJPInlineSmart(q.prompt, q.enHints)}` : `Q${i + 1}. ${labelPrompt}: <strong>${escapeHtml(q.prompt)}</strong>`;
+
+      const optionsHTML = q.options.map((opt, j) => {
+        let content = '';
+        if (q.promptSide === 'en') {
+          const it = jpDisplayMap.get(opt);
+          const enHints = it ? it.enDisplayList.join(' / ') : '';
+          content = formatJPInlineSmart(opt, enHints);
+        } else {
+          content = escapeHtml(opt);
+        }
+        return `
+          <div class="choice" data-q="${i}" data-opt="${j}" tabindex="0">
+            <div class="dot"></div>
+            <div>${content}</div>
+          </div>
+        `;
+      }).join('');
+
+      const div = document.createElement('div');
+      div.className = 'question';
+      div.innerHTML = `<div class="qtitle">${promptHTML}</div><div class="choices">${optionsHTML}</div>`;
+      wrap.appendChild(div);
+    });
+  }
+
+
+  function startTimer() {
+    if (timerHandle) clearInterval(timerHandle);
+    const el = document.getElementById('timer');
+    timerHandle = setInterval(() => {
+      const s = (performance.now() - quizStartTime) / 1000;
+      el.textContent = s.toFixed(1) + 's';
+    }, 100);
+  }
+  function stopTimer() { if (timerHandle) clearInterval(timerHandle); timerHandle = null; }
+
+
+  document.getElementById('questions').addEventListener('click', (e) => {
+    const choice = e.target.closest('.choice');
+    if (!choice) return;
+    const qi = parseInt(choice.dataset.q);
+    const oi = parseInt(choice.dataset.opt);
+    activeQuestions[qi].selected = oi;
+    const container = choice.parentElement;
+    container.querySelectorAll('.choice').forEach(el => el.classList.remove('active'));
+    choice.classList.add('active');
+  });
+
+
+  function submitQuiz() {
+    document.getElementById('submitBtn').disabled = true;
+    stopTimer();
+    const totalTimeSec = (performance.now() - quizStartTime) / 1000;
+
+    let score = 0;
+    activeQuestions.forEach(q => { if (q.selected === q.correctIndex) score++; });
+
+    const percent = Math.round((score / activeQuestions.length) * 100);
+    document.getElementById('quizarea').style.display = 'none';
+    document.getElementById('resultarea').style.display = '';
+    document.getElementById('score').textContent = `${score} / ${activeQuestions.length} (${percent}%)`;
+    document.getElementById('scoreBar').style.width = `${percent}%`;
+    document.getElementById('timeTaken').textContent = `${totalTimeSec.toFixed(1)} seconds`;
+
+    renderReview();
+
+    saveAttempt({
+      date: new Date().toISOString(),
+      quizIndex: activeQuizIndex + 1,
+      direction: activeDirection,
+      optCount: optCount,
+      questions: activeQuestions.length,
+      score,
+      timeSec: parseFloat(totalTimeSec.toFixed(1))
+    });
+    loadStatsFiltered();
+    document.getElementById('submitBtn').disabled = false;
+  }
+
+
+  function renderReview() {
+    const container = document.getElementById('review');
+    container.innerHTML = '';
+    activeQuestions.forEach((q, idx) => {
+      const promptLine = (q.promptSide === 'jp') ? `${formatJPInlineSmart(q.prompt, q.enHints)}` : `<strong>${escapeHtml(q.prompt)}</strong>`;
+      const userPicked = (q.selected != null) ? q.options[q.selected] : '(no selection)';
+      const correct = q.options[q.correctIndex];
+      const jpUserHTML = (() => {
+        if (q.promptSide === 'en') {
+          const it = jpDisplayMap.get(userPicked);
+          const enHints = it ? it.enDisplayList.join(' / ') : '';
+          return formatJPInlineSmart(userPicked, enHints);
+        }
+        return escapeHtml(userPicked);
+      })();
+      const jpCorrectHTML = (() => {
+        if (q.promptSide === 'en') {
+          const it = jpDisplayMap.get(correct);
+          const enHints = it ? it.enDisplayList.join(' / ') : '';
+          return formatJPInlineSmart(correct, enHints);
+        }
+        return `<strong>${escapeHtml(correct)}</strong>`;
+      })();
+      const ok = (q.selected === q.correctIndex);
+      const card = document.createElement('div');
+      card.className = 'review-card';
+      card.innerHTML = `
+        <div class="qtitle">Q${idx + 1}. ${q.promptSide === 'jp' ? 'JP' : 'EN'}: ${promptLine}</div>
+        <div>Your answer: ${ok ? '<span class="result-ok">' : '<span class="result-bad">'}${jpUserHTML}</span></div>
+        <div>Correct: ${jpCorrectHTML}</div>
+        ${q.promptSide === 'jp' && q.correctAlt.length > 1 ? `<div class="explain">Also correct (synonyms): ${q.correctAlt.map(escapeHtml).join(' / ')}</div>` : ''}
+      `;
+      container.appendChild(card);
+    });
+  }
+
+
+  function cancelQuiz() {
+    stopTimer();
+    document.getElementById('quizarea').style.display = 'none';
+    document.getElementById('resultarea').style.display = 'none';
+    document.getElementById('menu').style.display = '';
+  }
+
+
+  // Stats (filtered by direction + options)
+  const STATS_KEY = 'jpEnQuizStats_mcq_v3_equalBlocks_kana_auto_optDir';
+  function getStats() {
+    try { const raw = localStorage.getItem(STATS_KEY); if (!raw) return []; const arr = JSON.parse(raw); return Array.isArray(arr) ? arr : []; } catch { return []; }
+  }
+  function saveAttempt(attempt) { const arr = getStats(); arr.push(attempt); localStorage.setItem(STATS_KEY, JSON.stringify(arr)); }
+  function summarize(list) { if (!list.length) return { count:0, avgScore:0, avgTime:0, avgPct:0 }; const c=list.length; const sumScore=list.reduce((a,b)=>a+(b.score||0),0); const sumTime=list.reduce((a,b)=>a+(b.timeSec||0),0); const sumPct=list.reduce((a,b)=>a+((b.score||0)/(b.questions||1)*100),0); return { count:c, avgScore:sumScore/c, avgTime:sumTime/c, avgPct:sumPct/c }; }
+
+
+  function updateStatsFilterInfo(){
+    const dir = document.getElementById('direction').value;
+    const opt = clamp(parseInt(document.getElementById('optCount').value)||4,3,6);
+    const label = (dir==='en-jp'?'EN → JP':'JP → EN') + ` • ${opt} options`;
+    document.getElementById('statsFilterInfo').textContent = `Stats filter: ${label}`;
+  }
+  function renderStatsTableByQuiz(attempts, quizKey){
+    const byQuiz = {};
+    for (const a of attempts){ const k=a[quizKey]; if (!byQuiz[k]) byQuiz[k]=[]; byQuiz[k].push(a); }
+    const rows = [];
+    for (let i=1;i<=10;i++){ const s = summarize(byQuiz[i]||[]); rows.push({ quiz:i, s }); }
+    const lines = rows.map(r=> `Q${r.quiz}: ${r.s.count} tries, Avg ${r.s.avgPct.toFixed(1)}%, ${r.s.avgTime.toFixed(1)}s`);
+    return `<p class="muted">${lines.join(' • ')}</p>`;
+  }
+
+
+  // Charts core
+  function prepCanvas(canvas) {
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = Math.floor(rect.width * dpr);
+    canvas.height = Math.floor(rect.height * dpr);
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { ctx, width: rect.width, height: rect.height };
+  }
+  function drawGrid(ctx, x, y, w, h, stepsY, color='#e5e7eb') {
+    ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = 1; ctx.beginPath();
+    const step = h / stepsY;
+    for (let i = 0; i <= stepsY; i++) { const yy = y + h - i * step; ctx.moveTo(x, yy); ctx.lineTo(x + w, yy); }
+    ctx.stroke(); ctx.restore();
+  }
+  function drawAxes(ctx, x, y, w, h) {
+    ctx.save(); ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1.5; ctx.beginPath();
+    ctx.moveTo(x, y); ctx.lineTo(x, y + h);
+    ctx.moveTo(x, y + h); ctx.lineTo(x + w, y + h);
+    ctx.stroke(); ctx.restore();
+  }
+  function colorToRgba(hex, a) { const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16); return `rgba(${r},${g},${b},${a})`; }
+  function drawLineSeries(ctx, x, y, w, h, values, color) {
+    if (!values.length) return;
+    const maxY = 100, minY = 0, n = values.length, stepX = (n <= 1) ? w : (w / (n - 1));
+    ctx.save();
+    const grad = ctx.createLinearGradient(0, y, 0, y + h);
+    grad.addColorStop(0, colorToRgba(color, 0.25)); grad.addColorStop(1, colorToRgba(color, 0));
+    ctx.fillStyle = grad; ctx.beginPath();
+    values.forEach((v, i) => {
+      const xx = x + stepX * i, t = (v - minY) / (maxY - minY), yy = y + h - t * h;
+      if (i === 0) ctx.moveTo(xx, yy); else ctx.lineTo(xx, yy);
+    });
+    ctx.lineTo(x + w, y + h); ctx.lineTo(x, y + h); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.beginPath();
+    values.forEach((v, i) => {
+      const xx = x + stepX * i, t = (v - minY) / (maxY - minY), yy = y + h - t * h;
+      if (i === 0) ctx.moveTo(xx, yy); else ctx.lineTo(xx, yy);
+    });
+    ctx.stroke();
+    ctx.fillStyle = color;
+    for (let i=0;i<values.length;i++){
+      const xx = x + stepX * i, t=(values[i]-minY)/(maxY-minY), yy=y + h - t*h;
+      ctx.beginPath(); ctx.arc(xx, yy, 2.5, 0, Math.PI*2); ctx.fill();
+    }
+    ctx.restore();
+  }
+  function drawBarChart(ctx, x, y, w, h, values, colors) {
+    const n = values.length, gap=8, barW=(w - gap*(n+1)) / n, maxY=100, minY=0;
+    ctx.save();
+    for (let i=0;i<n;i++){
+      const v=values[i] ?? 0, t=(v-minY)/(maxY-minY), bh=t*h, bx=x+gap+i*(barW+gap), by=y+h-bh, c=colors[i%colors.length];
+      const grad=ctx.createLinearGradient(0,by,0,by+bh);
+      grad.addColorStop(0, colorToRgba(c,0.9)); grad.addColorStop(1, colorToRgba(c,0.5));
+      ctx.fillStyle=grad; ctx.fillRect(bx,by,barW,bh);
+      ctx.fillStyle='#0f172a'; ctx.font='10px Inter, system-ui, sans-serif'; ctx.textAlign='center';
+      ctx.fillText(Math.round(v).toString(), bx+barW/2, by-4);
+    }
+    ctx.restore();
+  }
+
+
+  function renderChartsFiltered(attempts, overallId, byQuizId, quizKey, labelPrefix){
+    const canvas1 = document.getElementById(overallId);
+    const canvas2 = document.getElementById(byQuizId);
+    const { ctx: c1, width: w1, height: h1 } = prepCanvas(canvas1);
+    c1.clearRect(0,0,w1,h1);
+    const pad = { l: 36, r: 12, t: 10, b: 20 };
+    drawAxes(c1, pad.l, pad.t, w1 - pad.l - pad.r, h1 - pad.t - pad.b);
+    drawGrid(c1, pad.l, pad.t, w1 - pad.l - pad.r, h1 - pad.t - pad.b, 5);
+
+    const last50 = attempts.slice(-50);
+    const allPerc = last50.map(a => (a.score || 0) / (a.questions || 1) * 100);
+    drawLineSeries(c1, pad.l, pad.t, w1 - pad.l - pad.r, h1 - pad.t - pad.b, allPerc, '#0ea5e9');
+
+    const { ctx: c2, width: w2, height: h2 } = prepCanvas(canvas2);
+    c2.clearRect(0,0,w2,h2);
+    drawAxes(c2, pad.l, pad.t, w2 - pad.l - pad.r, h2 - pad.t - pad.b);
+    drawGrid(c2, pad.l, pad.t, w2 - pad.l - pad.r, h2 - pad.t - pad.b, 5);
+
+    const byQuiz = Array.from({length:10}, (_,i) => {
+      const subset = attempts.filter(a => a[quizKey] === i + 1);
+      const s = summarize(subset);
+      return s.avgPct || 0;
+    });
+    const colors = ['#6366f1','#06b6d4','#22c55e','#f59e0b','#ef4444','#a855f7','#0ea5e9','#10b981','#f43f5e','#f97316'];
+    drawBarChart(c2, pad.l, pad.t, w2 - pad.l - pad.r, h2 - pad.t - pad.b, byQuiz, colors);
+
+    c2.save(); c2.font='11px Inter, system-ui, sans-serif'; c2.fillStyle='#334155'; c2.textAlign='center';
+    const n=10, gap=8, barW=(w2 - pad.l - pad.r - gap*(n+1))/n;
+    for (let i=0;i<n;i++){ const bx=pad.l + gap + i*(barW+gap) + barW/2; c2.fillText(`${labelPrefix}${i+1}`, bx, h2 - 4); }
+    c2.restore();
+  }
+
+
+  function loadStatsFiltered(){
+    const arrAll = getStats();
+    const dir = document.getElementById('direction').value;
+    const opt = clamp(parseInt(document.getElementById('optCount').value)||4,3,6);
+    updateStatsFilterInfo();
+    const arr = arrAll.filter(a => a.direction === dir && a.optCount === opt);
+    const statsDiv = document.getElementById('stats');
+    if (!arr.length) { statsDiv.textContent = 'No attempts yet for the selected combination.'; renderChartsFiltered([], 'chartOverall', 'chartByQuiz', 'quizIndex', 'Q'); return; }
+    const s = summarize(arr);
+    let html = '';
+    html += `<p><strong>Filter:</strong> ${(dir==='en-jp'?'EN → JP':'JP → EN')} • ${opt} options</p>`;
+    html += `<p>Attempts: ${s.count}, Avg %: ${s.avgPct.toFixed(1)}%, Avg Time: ${s.avgTime.toFixed(1)}s</p>`;
+    html += renderStatsTableByQuiz(arr, 'quizIndex');
+    statsDiv.innerHTML = html;
+    renderChartsFiltered(arr, 'chartOverall', 'chartByQuiz', 'quizIndex', 'Q');
+  }
+
+
+  // Learn paged (words)
+  const PAGES_PER_BLOCK = 5;
+  function getPageSizeForBlock(blockIdx){ const len = quizSets[blockIdx]?.length ?? 0; return Math.max(1, Math.ceil(len / PAGES_PER_BLOCK)); }
+  function getPageSlice(blockIdx, pageNum){ const block = quizSets[blockIdx] || []; const pageSize = getPageSizeForBlock(blockIdx); const start = (pageNum - 1) * pageSize; const end = Math.min(start + pageSize, block.length); return block.slice(start, end); }
+
+
+  const STARS_KEY = 'jpEnLearnStars_v1';
+  const KNOWN_KEY = 'jpEnLearnKnown_v1';
+  function loadSet(key){ try{ const raw=localStorage.getItem(key); if(!raw) return new Set(); return new Set(JSON.parse(raw)); } catch{ return new Set(); } }
+  function saveSet(key, set){ localStorage.setItem(key, JSON.stringify(Array.from(set))); }
+  let starSet = loadSet(STARS_KEY);
+  let knownSet = loadSet(KNOWN_KEY);
+
+
+  let learnState = { blockIndex:0, page:1, orderIdxs:[], cursor:0, hideEnglish:false, shuffle:false, filterStarred:false, filterUnknown:false, searchBlock:'' };
+
+
+  function populateLearnBlockSelect(){
+    const sel = document.getElementById('learnBlockSelect');
+    sel.innerHTML = '';
+    for (let i = 0; i < 10; i++){
+      const size = quizSets[i]?.length ?? 0;
+      const opt = document.createElement('option');
+      opt.value = String(i);
+      opt.textContent = `Block ${i+1} — ${size} words`;
+      sel.appendChild(opt);
+    }
+    sel.value = String(learnState.blockIndex);
+    updateLearnBlockMeta();
+  }
+  function updateLearnBlockMeta(){
+    const b = parseInt(document.getElementById('learnBlockSelect').value || '0', 10);
+    const set = quizSets[b] || [];
+    const meta = document.getElementById('learnBlockMeta');
+    meta.textContent = `Block size: ${set.length} • Preview: ${previewItems(set)}`;
+  }
+
+
+  function openLearnBlock(blockIdx){
+    learnState.blockIndex = blockIdx;
+    learnState.page = 1; learnState.cursor = 0; learnState.hideEnglish = false; learnState.shuffle = false; learnState.filterStarred = false; learnState.filterUnknown = false; learnState.searchBlock = '';
+    document.getElementById('filterStarred').checked = false; document.getElementById('toggleListHideEn').checked = false; document.getElementById('learnBlockSearch').value = '';
+    updateLearnHead();
+    applyLearnFilters();
+    renderLearnStudy();
+    renderLearnList();
+    document.getElementById('learnStudyArea').style.display = '';
+    scrollToTop();
+  }
+
+
+  function updateLearnHead(){
+    document.getElementById('learnBlockNum').textContent = (learnState.blockIndex + 1).toString();
+    const pageSelect = document.getElementById('learnPageSelect');
+    pageSelect.value = String(learnState.page);
+    const pageItems = getPageSlice(learnState.blockIndex, learnState.page).length;
+    document.getElementById('learnPageCount').textContent = String(pageItems);
+  }
+
+
+  function applyLearnFilters(){
+    let idxs = getPageSlice(learnState.blockIndex, learnState.page);
+    if (learnState.filterStarred) idxs = idxs.filter(i => starSet.has(items[i].jpDisplay));
+    if (learnState.filterUnknown) idxs = idxs.filter(i => !knownSet.has(items[i].jpDisplay));
+    if (learnState.searchBlock.trim()) {
+      const q = learnState.searchBlock.trim().toLowerCase();
+      idxs = idxs.filter(i => {
+        const it = items[i];
+        const enStr = it.enDisplayList.join(' / ').toLowerCase();
+        const jpStr = it.jpDisplay.toLowerCase();
+        return jpStr.includes(q) || enStr.includes(q);
+      });
+    }
+    learnState.orderIdxs = idxs.slice();
+    if (learnState.shuffle) shuffle(learnState.orderIdxs);
+    learnState.cursor = 0;
+    updateLearnHead();
+  }
+  function getCurrentItem(){ if (!learnState.orderIdxs.length) return null; const i = learnState.orderIdxs[learnState.cursor]; return items[i]; }
+  function renderLearnStudy(){
+    const it = getCurrentItem();
+    const total = learnState.orderIdxs.length;
+    document.getElementById('learnProgressText').textContent = `${Math.min(learnState.cursor+1, total)} / ${total}`;
+    const pct = total ? Math.round(((learnState.cursor+1)/total)*100) : 0;
+    document.getElementById('learnBar').style.width = `${pct}%`;
+
+    const promptEl = document.getElementById('learnPrompt');
+    const enEl = document.getElementById('learnEnglish');
+
+    if (!it){
+      promptEl.innerHTML = '<span class="muted">No items match current filters on this page.</span>';
+      enEl.textContent = '';
+      return;
+    }
+    const enHints = it.enDisplayList.join(' / ');
+    promptEl.innerHTML = formatJPStackedSmart(it.jpDisplay, enHints);
+    enEl.textContent = enHints;
+    enEl.style.visibility = learnState.hideEnglish ? 'hidden' : 'visible';
+
+    document.getElementById('btnHideEn').classList.toggle('toggle-on', learnState.hideEnglish);
+    document.getElementById('btnShuffle').classList.toggle('toggle-on', learnState.shuffle);
+    document.getElementById('btnStar').classList.toggle('active', starSet.has(it.jpDisplay));
+  }
+  function renderLearnList(){
+    const wrap = document.getElementById('learnList');
+    const blur = document.getElementById('toggleListHideEn').checked;
+    wrap.classList.toggle('hide-en', blur);
+    wrap.innerHTML = '';
+    learnState.orderIdxs.forEach((idx, pos) => {
+      const it = items[idx];
+      const enHints = it.enDisplayList.join(' / ');
+      const row = document.createElement('div');
+      row.className = 'learn-row';
+      row.innerHTML = `
+  <div class="jp-cell">${formatJPStackedSmart(it.jpDisplay, enHints)}</div>
+  <div class="en-cell">${escapeHtml(enHints)}</div>
+  <div class="row-actions" style="text-align:right">
+    <button class="btn-ghost star ${starSet.has(it.jpDisplay)?'active':''}" data-jp="${escapeHtml(it.jpDisplay)}">★</button>
+  </div>
+`;
+      wrap.appendChild(row);
+    });
+  }
+
+
+  // Learn controls
+  document.getElementById('btnPrev').addEventListener('click', () => {
+    if (!learnState.orderIdxs.length) return;
+    learnState.cursor = (learnState.cursor - 1 + learnState.orderIdxs.length) % learnState.orderIdxs.length;
+    renderLearnStudy();
+  });
+  document.getElementById('btnNext').addEventListener('click', () => {
+    if (!learnState.orderIdxs.length) return;
+    learnState.cursor = (learnState.cursor + 1) % learnState.orderIdxs.length;
+    renderLearnStudy();
+  });
+  document.getElementById('btnShuffle').addEventListener('click', () => {
+    learnState.shuffle = !learnState.shuffle;
+    applyLearnFilters(); renderLearnStudy(); renderLearnList();
+  });
+  document.getElementById('btnHideEn').addEventListener('click', () => {
+    learnState.hideEnglish = !learnState.hideEnglish;
+    renderLearnStudy();
+  });
+  document.getElementById('btnStar').addEventListener('click', () => {
+    const it = getCurrentItem(); if (!it) return;
+    if (starSet.has(it.jpDisplay)) starSet.delete(it.jpDisplay); else starSet.add(it.jpDisplay);
+    saveSet(STARS_KEY, starSet);
+    renderLearnStudy(); renderLearnList();
+  });
+ 
+  document.getElementById('filterStarred').addEventListener('change', (e) => {
+    learnState.filterStarred = e.target.checked; applyLearnFilters(); renderLearnStudy(); renderLearnList();
+  });
+  
+  document.getElementById('toggleListHideEn').addEventListener('change', () => renderLearnList());
+  document.getElementById('btnResetFilters').addEventListener('click', () => {
+    learnState.filterStarred = false; learnState.filterUnknown = false; learnState.hideEnglish = false; learnState.shuffle = false; learnState.searchBlock = '';
+    document.getElementById('filterStarred').checked = false;
+    document.getElementById('filterUnknown').checked = false;
+    document.getElementById('toggleListHideEn').checked = false;
+    document.getElementById('learnBlockSearch').value = '';
+    applyLearnFilters(); renderLearnStudy(); renderLearnList();
+  });
+  document.getElementById('learnBlockSearch').addEventListener('input', (e) => {
+    learnState.searchBlock = e.target.value || '';
+    applyLearnFilters(); renderLearnStudy(); renderLearnList();
+  });
+  document.getElementById('learnBackBtn').addEventListener('click', () => {
+    document.getElementById('learnStudyArea').style.display = 'none';
+    scrollToTop();
+  });
+  document.getElementById('learnList').addEventListener('click', (e) => {
+    const starBtn = e.target.closest('.star');
+    const knownBtn = e.target.closest('.known');
+    const goBtn = e.target.closest('button[data-pos]');
+    if (starBtn) {
+      const jp = starBtn.getAttribute('data-jp');
+      if (starSet.has(jp)) starSet.delete(jp); else starSet.add(jp);
+      saveSet(STARS_KEY, starSet); renderLearnStudy(); renderLearnList();
+    } else if (knownBtn) {
+      const jp = knownBtn.getAttribute('data-jp');
+      if (knownSet.has(jp)) knownSet.delete(jp); else knownSet.add(jp);
+      saveSet(KNOWN_KEY, knownSet); renderLearnStudy(); renderLearnList();
+    } else if (goBtn) {
+      const pos = parseInt(goBtn.getAttribute('data-pos'), 10);
+      if (!Number.isNaN(pos)) { learnState.cursor = pos; renderLearnStudy(); scrollToTop(); }
+    }
+  });
+
+
+  document.getElementById('learnBlockSelect').addEventListener('change', updateLearnBlockMeta);
+  document.getElementById('openBlockBtn').addEventListener('click', () => {
+    const b = parseInt(document.getElementById('learnBlockSelect').value || '0', 10);
+    openLearnBlock(b);
+  });
+  document.getElementById('learnPageSelect').addEventListener('change', (e) => {
+    const p = clamp(parseInt(e.target.value || '1', 10), 1, PAGES_PER_BLOCK);
+    learnState.page = p; learnState.cursor = 0; updateLearnHead(); applyLearnFilters(); renderLearnStudy(); renderLearnList();
+  });
+  document.getElementById('learnNextPageBtn').addEventListener('click', () => {
+    learnState.page = (learnState.page % PAGES_PER_BLOCK) + 1; learnState.cursor = 0; updateLearnHead(); applyLearnFilters(); renderLearnStudy(); renderLearnList();
+  });
+
+
+  // Global search
+  function getPageSizeForBlock(blockIdx){ const len = quizSets[blockIdx]?.length ?? 0; return Math.max(1, Math.ceil(len / PAGES_PER_BLOCK)); }
+  document.getElementById('learnSearchBtn').addEventListener('click', () => {
+    const q = (document.getElementById('learnGlobalSearch').value || '').trim().toLowerCase();
+    if (!q) { alert('Enter a search term.'); return; }
+    for (let b = 0; b < quizSets.length; b++){
+      const block = quizSets[b];
+      for (let k = 0; k < block.length; k++){
+        const i = block[k];
+        const it = items[i];
+        const en = it.enDisplayList.join(' / ').toLowerCase();
+        const jp = it.jpDisplay.toLowerCase();
+        if (jp.includes(q) || en.includes(q)) {
+          const pageSize = getPageSizeForBlock(b);
+          const page = Math.floor(k / pageSize) + 1;
+          openLearnBlock(b);
+          learnState.page = page;
+          updateLearnHead();
+          applyLearnFilters();
+          const pageSlice = getPageSlice(b, page);
+          const posInPage = pageSlice.indexOf(i);
+          const posInOrder = learnState.orderIdxs.indexOf(i);
+          learnState.cursor = (posInOrder >= 0) ? posInOrder : Math.max(0, posInPage);
+          renderLearnStudy(); renderLearnList();
+          return;
+        }
+      }
+    }
+    alert('No match found in current list.');
+  });
+  document.getElementById('learnClearSearchBtn').addEventListener('click', () => {
+    document.getElementById('learnGlobalSearch').value = '';
+  });
+
+
+  // Speech
+  let voices = [];
+  function loadVoices(){ voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+  if ('speechSynthesis' in window) { window.speechSynthesis.onvoiceschanged = loadVoices; loadVoices(); }
+  function speak(text, lang){
+    if (!('speechSynthesis' in window)) return;
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = lang;
+    const v = voices.find(v => v.lang.toLowerCase().startsWith(lang.toLowerCase()));
+    if (v) u.voice = v;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  }
+  document.getElementById('btnSpeakJa').addEventListener('click', () => {
+    const it = getCurrentItem(); if (!it) return;
+    const kana = preferredKana(it.jpDisplay, it.enDisplayList.join(' / '));
+    speak(kana, 'ja-JP');
+  });
+  document.getElementById('btnSpeakEn').addEventListener('click', () => {
+    const it = getCurrentItem(); if (!it) return;
+    speak(it.enDisplayList.join(' / '), 'en-US');
+  });
+
+
+  // Tabs
+  document.getElementById('tabLearn').addEventListener('click', () => setActiveTab('learn'));
+  document.getElementById('tabQuiz').addEventListener('click', () => setActiveTab('quiz'));
+  document.getElementById('tabMega').addEventListener('click', () => setActiveTab('mega'));
+  document.getElementById('tabHira').addEventListener('click', () => setActiveTab('hira'));
+  document.getElementById('tabKata').addEventListener('click', () => setActiveTab('kata'));
+  document.getElementById('tabKanaQuiz').addEventListener('click', () => setActiveTab('kanaq'));
+
+
+  // Quiz (words) events
+  document.getElementById('regenBtn').addEventListener('click', generateTenQuizzes);
+  document.getElementById('regenBtn2').addEventListener('click', () => {
+    document.getElementById('resultarea').style.display = 'none';
+    document.getElementById('menu').style.display = '';
+    generateTenQuizzes();
+  });
+  document.getElementById('submitBtn').addEventListener('click', submitQuiz);
+  document.getElementById('cancelBtn').addEventListener('click', cancelQuiz);
+  document.getElementById('backBtn').addEventListener('click', () => {
+    document.getElementById('resultarea').style.display = 'none';
+    document.getElementById('menu').style.display = '';
+  });
+  document.getElementById('resetStatsBtn').addEventListener('click', () => {
+    if (!confirm('Reset all saved normal-quiz stats?')) return;
+    localStorage.removeItem(STATS_KEY);
+    loadStatsFiltered();
+  });
+  document.getElementById('exportStatsBtn').addEventListener('click', () => {
+    const data = getStats();
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'jp_en_quiz_stats.json'; a.click(); URL.revokeObjectURL(url);
+  });
+  document.getElementById('importStatsBtn').addEventListener('click', () => {
+    const f = document.getElementById('importFile').files[0];
+    if (!f) { alert('Choose a JSON file first.'); return; }
+    const reader = new FileReader();
+    reader.onload = () => {
+      try { const data = JSON.parse(reader.result); if (!Array.isArray(data)) throw new Error('Invalid data'); localStorage.setItem(STATS_KEY, JSON.stringify(data)); alert('Stats imported.'); loadStatsFiltered(); }
+      catch { alert('Failed to import stats.'); }
+    };
+    reader.readAsText(f);
+  });
+
+
+  // ===== MEGA QUIZ =====
+  let megaQuizSets = [];
+  function computeMegaBlocks() {
+    megaQuizSets = [];
+    for (let k = 0; k < 10; k++) {
+      let block = [];
+      for (let b = 0; b <= k; b++) block = block.concat(quizSets[b] || []);
+      megaQuizSets.push(block);
+    }
+  }
+  function previewMegaItems(indexes, limit = 3) {
+    if (!indexes.length) return '(empty)';
+    const picks = sample(indexes, Math.min(limit, indexes.length)).map(i => items[i].jpDisplay);
+    return picks.join(', ');
+  }
+  function generateTenMegaQuizzes() {
+    computeTenBlocks();
+    computeMegaBlocks();
+    renderMegaQuizGrid();
+    updateMegaStatsFilterInfo();
+    loadMegaStatsFiltered();
+  }
+  function renderMegaQuizGrid() {
+    const grid = document.getElementById('megaQuizGrid');
+    grid.innerHTML = '';
+    if (!megaQuizSets.length) {
+      grid.innerHTML = '<div class="hl">Click “Generate 10 Mega Quizzes” to create a fresh set.</div>';
+      return;
+    }
+    const dirLabel = (document.getElementById('megaDirection').value === 'jp-en') ? 'JP → EN' : 'EN → JP';
+    megaQuizSets.forEach((set, i) => {
+      const card = document.createElement('div');
+      card.className = 'quiz-card';
+      card.innerHTML = `
+        <h3>Mega Quiz ${i + 1}</h3>
+        <div><span class="pill">${dirLabel}</span></div>
+        <div class="muted" style="margin-top:6px">Blocks: 1–${i+1} • Options: ${clamp(parseInt(document.getElementById('megaOptCount').value)||4,3,6)}</div>
+        <div class="muted" style="margin-top:6px">Preview: ${escapeHtml(previewMegaItems(set))}</div>
+        <button class="btn-prim" style="margin-top:8px;width:100%">Start Mega Quiz ${i + 1}</button>
+      `;
+      card.querySelector('button').addEventListener('click', () => startMegaQuiz(i));
+      grid.appendChild(card);
+    });
+  }
+
+
+  let activeMegaQuizIndex = 0;
+  let activeMegaDirection = 'jp-en';
+  let megaOptCount = 4;
+  let activeMegaQuestions = [];
+  let megaQuizStartTime = 0;
+  let megaTimerHandle = null;
+
+
+  function startMegaQuiz(i) {
+    activeMegaQuizIndex = i;
+    activeMegaDirection = document.getElementById('megaDirection').value;
+    megaOptCount = clamp(parseInt(document.getElementById('megaOptCount').value) || 4, 3, 6);
+
+    const chosenIdxs = pickNWithReplacement(megaQuizSets[i], 50);
+    const randomizedIdxs = shuffle(chosenIdxs.slice());
+    activeMegaQuestions = assembleQuestions(randomizedIdxs, activeMegaDirection, megaOptCount);
+
+    document.getElementById('megaMenu').style.display = 'none';
+    document.getElementById('megaResultarea').style.display = 'none';
+    document.getElementById('megaQuizarea').style.display = '';
+
+    document.getElementById('megaPillDir').textContent = (activeMegaDirection === 'jp-en') ? 'JP → EN' : 'EN → JP';
+    document.getElementById('megaPillQuizNum').textContent = (i + 1).toString();
+
+    renderMegaQuestions();
+    megaQuizStartTime = performance.now();
+    startMegaTimer();
+  }
+  function renderMegaQuestions() {
+    const wrap = document.getElementById('megaQuestions');
+    wrap.innerHTML = '';
+    activeMegaQuestions.forEach((q, i) => {
+      const labelPrompt = (q.promptSide === 'jp') ? 'Japanese' : 'English';
+      const promptHTML = (q.promptSide === 'jp') ? `Q${i + 1}. ${labelPrompt}: ${formatJPInlineSmart(q.prompt, q.enHints)}` : `Q${i + 1}. ${labelPrompt}: <strong>${escapeHtml(q.prompt)}</strong>`;
+      const optionsHTML = q.options.map((opt, j) => {
+        let content = '';
+        if (q.promptSide === 'en') {
+          const it = jpDisplayMap.get(opt);
+          const enHints = it ? it.enDisplayList.join(' / ') : '';
+          content = formatJPInlineSmart(opt, enHints);
+        } else { content = escapeHtml(opt); }
+        return `<div class="choice" data-q="${i}" data-opt="${j}" tabindex="0"><div class="dot"></div><div>${content}</div></div>`;
+      }).join('');
+      const div = document.createElement('div');
+      div.className = 'question';
+      div.innerHTML = `<div class="qtitle">${promptHTML}</div><div class="choices">${optionsHTML}</div>`;
+      wrap.appendChild(div);
+    });
+  }
+  function startMegaTimer() {
+    if (megaTimerHandle) clearInterval(megaTimerHandle);
+    const el = document.getElementById('megaTimer');
+    megaTimerHandle = setInterval(() => { const s = (performance.now() - megaQuizStartTime) / 1000; el.textContent = s.toFixed(1) + 's'; }, 100);
+  }
+  function stopMegaTimer() { if (megaTimerHandle) clearInterval(megaTimerHandle); megaTimerHandle = null; }
+  document.getElementById('megaQuestions').addEventListener('click', (e) => {
+    const choice = e.target.closest('.choice'); if (!choice) return;
+    const qi = parseInt(choice.dataset.q); const oi = parseInt(choice.dataset.opt);
+    activeMegaQuestions[qi].selected = oi;
+    const container = choice.parentElement;
+    container.querySelectorAll('.choice').forEach(el => el.classList.remove('active'));
+    choice.classList.add('active');
+  });
+
+
+  function submitMegaQuiz() {
+    document.getElementById('megaSubmitBtn').disabled = true;
+    stopMegaTimer();
+    const totalTimeSec = (performance.now() - megaQuizStartTime) / 1000;
+    let score = 0; activeMegaQuestions.forEach(q => { if (q.selected === q.correctIndex) score++; });
+    const percent = Math.round((score / activeMegaQuestions.length) * 100);
+    document.getElementById('megaQuizarea').style.display = 'none';
+    document.getElementById('megaResultarea').style.display = '';
+    document.getElementById('megaScore').textContent = `${score} / ${activeMegaQuestions.length} (${percent}%)`;
+    document.getElementById('megaScoreBar').style.width = `${percent}%`;
+    document.getElementById('megaTimeTaken').textContent = `${totalTimeSec.toFixed(1)} seconds`;
+    renderMegaReview();
+
+    saveMegaAttempt({
+      date: new Date().toISOString(),
+      megaQuizIndex: activeMegaQuizIndex + 1,
+      direction: activeMegaDirection,
+      optCount: megaOptCount,
+      questions: activeMegaQuestions.length,
+      score,
+      timeSec: parseFloat(totalTimeSec.toFixed(1))
+    });
+    loadMegaStatsFiltered();
+    document.getElementById('megaSubmitBtn').disabled = false;
+  }
+
+
+  function renderMegaReview() {
+    const container = document.getElementById('megaReview');
+    container.innerHTML = '';
+    activeMegaQuestions.forEach((q, idx) => {
+      const promptLine = (q.promptSide === 'jp') ? `${formatJPInlineSmart(q.prompt, q.enHints)}` : `<strong>${escapeHtml(q.prompt)}</strong>`;
+      const userPicked = (q.selected != null) ? q.options[q.selected] : '(no selection)';
+      const correct = q.options[q.correctIndex];
+      const jpUserHTML = (() => {
+        if (q.promptSide === 'en') {
+          const it = jpDisplayMap.get(userPicked); const enHints = it ? it.enDisplayList.join(' / ') : ''; return formatJPInlineSmart(userPicked, enHints);
+        }
+        return escapeHtml(userPicked);
+      })();
+      const jpCorrectHTML = (() => {
+        if (q.promptSide === 'en') {
+          const it = jpDisplayMap.get(correct); const enHints = it ? it.enDisplayList.join(' / ') : ''; return formatJPInlineSmart(correct, enHints);
+        }
+        return `<strong>${escapeHtml(correct)}</strong>`;
+      })();
+      const ok = (q.selected === q.correctIndex);
+      const card = document.createElement('div'); card.className = 'review-card';
+      card.innerHTML = `
+        <div class="qtitle">Q${idx + 1}. ${q.promptSide === 'jp' ? 'JP' : 'EN'}: ${promptLine}</div>
+        <div>Your answer: ${ok ? '<span class="result-ok">' : '<span class="result-bad">'}${jpUserHTML}</span></div>
+        <div>Correct: ${jpCorrectHTML}</div>`;
+      container.appendChild(card);
+    });
+  }
+
+
+  function cancelMegaQuiz() { stopMegaTimer(); document.getElementById('megaQuizarea').style.display = 'none'; document.getElementById('megaResultarea').style.display = 'none'; document.getElementById('megaMenu').style.display = ''; }
+
+
+  const MEGA_STATS_KEY = 'jpEnMegaQuizStats_mcq_v2_cumulative_kana_auto_optDir';
+  function getMegaStats() { try { const raw=localStorage.getItem(MEGA_STATS_KEY); if(!raw) return []; const arr=JSON.parse(raw); return Array.isArray(arr)?arr:[] } catch { return [] } }
+  function saveMegaAttempt(attempt) { const arr=getMegaStats(); arr.push(attempt); localStorage.setItem(MEGA_STATS_KEY, JSON.stringify(arr)); }
+  function updateMegaStatsFilterInfo(){
+    const dir = document.getElementById('megaDirection').value;
+    const opt = clamp(parseInt(document.getElementById('megaOptCount').value)||4,3,6);
+    const label = (dir==='en-jp'?'EN → JP':'JP → EN') + ` • ${opt} options`;
+    document.getElementById('megaStatsFilterInfo').textContent = `Stats filter: ${label}`;
+  }
+  function loadMegaStatsFiltered(){
+    const arrAll = getMegaStats();
+    const dir = document.getElementById('megaDirection').value;
+    const opt = clamp(parseInt(document.getElementById('megaOptCount').value)||4,3,6);
+    updateMegaStatsFilterInfo();
+    const arr = arrAll.filter(a => a.direction === dir && a.optCount === opt);
+    const statsDiv = document.getElementById('megaStats');
+    if (!arr.length) { statsDiv.textContent = 'No attempts yet for the selected combination.'; renderChartsFiltered([], 'megaChartOverall', 'megaChartByQuiz', 'megaQuizIndex', 'MQ'); return; }
+    const s = summarize(arr);
+    let html = '';
+    html += `<p><strong>Filter:</strong> ${(dir==='en-jp'?'EN → JP':'JP → EN')} • ${opt} options</p>`;
+    html += `<p>Attempts: ${s.count}, Avg %: ${s.avgPct.toFixed(1)}%, Avg Time: ${s.avgTime.toFixed(1)}s</p>`;
+    const byQuiz = {};
+    for (const a of arr) { const k=a.megaQuizIndex; if (!byQuiz[k]) byQuiz[k]=[]; byQuiz[k].push(a); }
+    const lines=[];
+    for (let i=1;i<=10;i++){ const s2=summarize(byQuiz[i]||[]); lines.push(`MQ${i}: ${s2.count} tries, Avg ${s2.avgPct.toFixed(1)}%, ${s2.avgTime.toFixed(1)}s`); }
+    html += `<p class="muted">${lines.join(' • ')}</p>`;
+    statsDiv.innerHTML = html;
+    renderChartsFiltered(arr, 'megaChartOverall', 'megaChartByQuiz', 'megaQuizIndex', 'MQ');
+  }
+
+
+  document.getElementById('megaGenBtn').addEventListener('click', generateTenMegaQuizzes);
+  document.getElementById('megaGenBtn2').addEventListener('click', () => {
+    document.getElementById('megaResultarea').style.display = 'none';
+    document.getElementById('megaMenu').style.display = '';
+    generateTenMegaQuizzes();
+  });
+  document.getElementById('megaSubmitBtn').addEventListener('click', submitMegaQuiz);
+  document.getElementById('megaCancelBtn').addEventListener('click', cancelMegaQuiz);
+  document.getElementById('megaBackBtn').addEventListener('click', () => {
+    document.getElementById('megaResultarea').style.display = 'none';
+    document.getElementById('megaMenu').style.display = '';
+  });
+  document.getElementById('megaResetStatsBtn').addEventListener('click', () => {
+    if (!confirm('Reset all saved mega-quiz stats?')) return;
+    localStorage.removeItem(MEGA_STATS_KEY);
+    loadMegaStatsFiltered();
+  });
+  document.getElementById('megaExportStatsBtn').addEventListener('click', () => {
+    const data = getMegaStats();
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'jp_en_mega_quiz_stats.json'; a.click(); URL.revokeObjectURL(url);
+  });
+  document.getElementById('megaImportStatsBtn').addEventListener('click', () => {
+    const f = document.getElementById('megaImportFile').files[0];
+    if (!f) { alert('Choose a JSON file first.'); return; }
+    const reader = new FileReader();
+    reader.onload = () => {
+      try { const data = JSON.parse(reader.result); if (!Array.isArray(data)) throw new Error('Invalid data'); localStorage.setItem(MEGA_STATS_KEY, JSON.stringify(data)); alert('Mega stats imported.'); loadMegaStatsFiltered(); }
+      catch { alert('Failed to import mega stats.'); }
+    };
+    reader.readAsText(f);
+  });
+
+
+  // ===== Learn Hiragana & Katakana (Enhanced like Learn Words) =====
+  function buildKanaEntries(includeDakuten, includeHandakuten){
+    const entries = [];
+    function pushEntry(romaji, hira, kata, type='base', alts=[]){ const alt = Array.from(new Set([romaji, ...alts])); entries.push({ romaji, hira, kata, type, altRomaji: alt }); }
+    // vowels
+    [['a','あ','ア'],['i','い','イ'],['u','う','ウ'],['e','え','エ'],['o','お','オ']].forEach(([r,h,k])=> pushEntry(r,h,k));
+    // K / G
+    [['ka','か','カ'],['ki','き','キ'],['ku','く','ク'],['ke','け','ケ'],['ko','こ','コ']].forEach(e=> pushEntry(...e));
+    if (includeDakuten) [['ga','が','ガ'],['gi','ぎ','ギ'],['gu','ぐ','グ'],['ge','げ','ゲ'],['go','ご','ゴ']].forEach(e=> pushEntry(...e,'dakuten'));
+    // S / Z
+    [['sa','さ','サ'],['shi','し','シ',['si']],['su','す','ス'],['se','せ','セ'],['so','そ','ソ']].forEach(([r,h,k,alts])=> pushEntry(r,h,k,'base',alts||[]));
+    if (includeDakuten) [['za','ざ','ザ'],['ji','じ','ジ',['zi']],['zu','ず','ズ'],['ze','ぜ','ゼ'],['zo','ぞ','ゾ']].forEach(([r,h,k,alts])=> pushEntry(r,h,k,'dakuten',alts||[]));
+    // T / D
+    [['ta','た','タ'],['chi','ち','チ',['ti']],['tsu','つ','ツ',['tu']],['te','て','テ'],['to','と','ト']].forEach(([r,h,k,alts])=> pushEntry(r,h,k,'base',alts||[]));
+    if (includeDakuten) [['da','だ','ダ'],['ji','ぢ','ヂ',['di','ji']],['zu','づ','ヅ',['du','zu']],['de','で','デ'],['do','ど','ド']].forEach(([r,h,k,alts])=> pushEntry(r,h,k,'dakuten',alts||[]));
+    // N
+    [['na','な','ナ'],['ni','に','ニ'],['nu','ぬ','ヌ'],['ne','ね','ネ'],['no','の','ノ']].forEach(e=> pushEntry(...e));
+    // H / B / P
+    [['ha','は','ハ'],['hi','ひ','ヒ'],['fu','ふ','フ',['hu']],['he','へ','ヘ'],['ho','ほ','ホ']].forEach(([r,h,k,alts])=> pushEntry(r,h,k,'base',alts||[]));
+    if (includeDakuten) [['ba','ば','バ'],['bi','び','ビ'],['bu','ぶ','ブ'],['be','べ','ベ'],['bo','ぼ','ボ']].forEach(e=> pushEntry(...e,'dakuten'));
+    if (includeHandakuten) [['pa','ぱ','パ'],['pi','ぴ','ピ'],['pu','ぷ','プ'],['pe','ぺ','ペ'],['po','ぽ','ポ']].forEach(e=> pushEntry(...e,'handakuten'));
+    // M
+    [['ma','ま','マ'],['mi','み','ミ'],['mu','む','ム'],['me','め','メ'],['mo','も','モ']].forEach(e=> pushEntry(...e));
+    // Y
+    [['ya','や','ヤ'],['yu','ゆ','ユ'],['yo','よ','ヨ']].forEach(e=> pushEntry(...e));
+    // R
+    [['ra','ら','ラ'],['ri','り','リ'],['ru','る','ル'],['re','れ','レ'],['ro','ろ','ロ']].forEach(e=> pushEntry(...e));
+    // W + N
+    [['wa','わ','ワ'],['wo','を','ヲ',['o']],['n','ん','ン']].forEach(([r,h,k,alts])=> pushEntry(r,h,k,'base',alts||[]));
+    return entries;
+  }
+
+
+  // Kana learn states and storage
+  const KANA_STARS_KEY = 'jpKanaStars_v1';
+  const KANA_KNOWN_KEY = 'jpKanaKnown_v1';
+  let kanaStarSet = loadSet(KANA_STARS_KEY);
+  let kanaKnownSet = loadSet(KANA_KNOWN_KEY);
+
+
+  const kanaStates = {
+    hira: { entries: [], orderIdxs: [], cursor: 0, hideRomaji: false, shuffle: false, filterStarred: false, filterUnknown: false, globalSearch: '', pageSearch: '', includeDakuten:false, includeHandakuten:false },
+    kata: { entries: [], orderIdxs: [], cursor: 0, hideRomaji: false, shuffle: false, filterStarred: false, filterUnknown: false, globalSearch: '', pageSearch: '', includeDakuten:false, includeHandakuten:false },
+  };
+
+
+  function buildKanaViewEntries(script, includeDakuten, includeHandakuten, globalQ){
+    const base = buildKanaEntries(includeDakuten, includeHandakuten);
+    const q = (globalQ || '').trim().toLowerCase();
+    const out = [];
+    for (const e of base){
+      const roms = Array.from(new Set(e.altRomaji||[]));
+      const romStr = roms.join(' / ');
+      const searchStr = `${romStr} ${e.hira} ${e.kata}`.toLowerCase();
+      if (q && !searchStr.includes(q)) continue;
+      const kanaChar = (script === 'kata') ? e.kata : e.hira;
+      const id = `${script}|${kanaChar}`;
+      out.push({ id, kana: kanaChar, romaji: romStr, type: e.type, searchStr });
+    }
+    return out;
+  }
+  function kanaApplyFilters(script){
+    const st = kanaStates[script];
+    const arr = st.entries;
+    let idxs = arr.map((_,i)=>i);
+    if (st.filterStarred) idxs = idxs.filter(i => kanaStarSet.has(arr[i].id));
+    if (st.filterUnknown) idxs = idxs.filter(i => !kanaKnownSet.has(arr[i].id));
+    const q = (st.pageSearch || '').trim().toLowerCase();
+    if (q) idxs = idxs.filter(i => arr[i].searchStr.includes(q) || arr[i].romaji.toLowerCase().includes(q) || arr[i].kana.includes(q));
+    if (st.shuffle) shuffle(idxs);
+    st.orderIdxs = idxs;
+    if (st.cursor >= idxs.length) st.cursor = 0;
+  }
+  function kanaRenderStudy(script){
+    const st = kanaStates[script];
+    const p = script==='hira'?'hira':'kata';
+    const titleEl = document.getElementById(p+'StudyTitle');
+    const romEl   = document.getElementById(p+'StudyRomaji');
+    const barEl   = document.getElementById(p+'Bar');
+    const progEl  = document.getElementById(p+'ProgressText');
+    const starBtn = document.getElementById(p+'Star');
+    const knownBtn= document.getElementById(p+'Known');
+    const shuffleBtn = document.getElementById(p+'Shuffle');
+    const hideBtn = document.getElementById(p+'HideRomaji');
+
+    const total = st.orderIdxs.length;
+    progEl.textContent = `${Math.min(st.cursor+1, total)} / ${total}`;
+    const pct = total ? Math.round(((st.cursor+1)/total)*100) : 0;
+    barEl.style.width = `${pct}%`;
+
+    if (!total){
+      titleEl.innerHTML = '<span class="muted">No items match current filters.</span>';
+      romEl.textContent = '';
+      starBtn.classList.remove('active');
+      knownBtn.classList.remove('active');
+      shuffleBtn.classList.toggle('toggle-on', st.shuffle);
+      hideBtn.classList.toggle('toggle-on', st.hideRomaji);
+      romEl.style.visibility = st.hideRomaji ? 'hidden' : 'visible';
+      return;
+    }
+    const entry = st.entries[st.orderIdxs[st.cursor]];
+    titleEl.innerHTML = `<span style="font-size:40px;line-height:1">${escapeHtml(entry.kana)}</span> <span class="info-chip">${escapeHtml(entry.type)}</span>`;
+    romEl.textContent = entry.romaji;
+    romEl.style.visibility = st.hideRomaji ? 'hidden' : 'visible';
+    starBtn.classList.toggle('active', kanaStarSet.has(entry.id));
+    knownBtn.classList.toggle('active', kanaKnownSet.has(entry.id));
+    shuffleBtn.classList.toggle('toggle-on', st.shuffle);
+    hideBtn.classList.toggle('toggle-on', st.hideRomaji);
+  }
+  function kanaRenderList(script){
+    const st = kanaStates[script];
+    const p = script==='hira'?'hira':'kata';
+    const wrap = document.getElementById(p+'LearnList');
+    wrap.classList.toggle('hide-en', document.getElementById(p+'ListHideRomaji').checked);
+    wrap.innerHTML = '';
+    st.orderIdxs.forEach((idx,pos) => {
+      const e = st.entries[idx];
+      const row = document.createElement('div');
+      row.className = 'learn-row';
+      row.innerHTML = `
+        <div class="jp-cell"><strong>${escapeHtml(e.kana)}</strong></div>
+        <div class="en-cell">${escapeHtml(e.romaji)}</div>
+        <div class="row-actions" style="text-align:right">
+          <button class="btn-ghost star ${kanaStarSet.has(e.id)?'active':''}" data-id="${escapeHtml(e.id)}">★</button>
+          <button class="btn-ghost known ${kanaKnownSet.has(e.id)?'active':''}" data-id="${escapeHtml(e.id)}">✓</button>
+          <button class="btn-sec" data-pos="${pos}">Go</button>
+        </div>
+      `;
+      wrap.appendChild(row);
+    });
+  }
+  function kanaRebuild(script){
+    const p = script==='hira'?'hira':'kata';
+    const includeDak = document.getElementById(p+'Dakuten').checked;
+    const includeHanda = document.getElementById(p+'Handakuten').checked;
+    const globalQ = (document.getElementById(p+'Search').value || '').trim().toLowerCase();
+    const st = kanaStates[script];
+    st.includeDakuten = includeDak;
+    st.includeHandakuten = includeHanda;
+    st.globalSearch = globalQ;
+    st.entries = buildKanaViewEntries(script, includeDak, includeHanda, globalQ);
+    st.cursor = 0;
+    kanaApplyFilters(script);
+    kanaRenderStudy(script);
+    kanaRenderList(script);
+  }
+  function renderHiraLearn(){ kanaRebuild('hira'); }
+  function renderKataLearn(){ kanaRebuild('kata'); }
+
+
+  function initKanaUI(script){
+    const p = script==='hira'?'hira':'kata';
+    // Controls
+    document.getElementById(p+'Prev').addEventListener('click', () => {
+      const st=kanaStates[script]; if(!st.orderIdxs.length) return;
+      st.cursor = (st.cursor - 1 + st.orderIdxs.length) % st.orderIdxs.length;
+      kanaRenderStudy(script);
+    });
+    document.getElementById(p+'Next').addEventListener('click', () => {
+      const st=kanaStates[script]; if(!st.orderIdxs.length) return;
+      st.cursor = (st.cursor + 1) % st.orderIdxs.length;
+      kanaRenderStudy(script);
+    });
+    document.getElementById(p+'Shuffle').addEventListener('click', () => {
+      const st=kanaStates[script]; st.shuffle = !st.shuffle; kanaApplyFilters(script); kanaRenderStudy(script); kanaRenderList(script);
+    });
+    document.getElementById(p+'HideRomaji').addEventListener('click', () => {
+      const st=kanaStates[script]; st.hideRomaji = !st.hideRomaji; kanaRenderStudy(script);
+    });
+    document.getElementById(p+'Speak').addEventListener('click', () => {
+      const st=kanaStates[script]; if(!st.orderIdxs.length) return;
+      const e = st.entries[st.orderIdxs[st.cursor]]; speak(e.kana, 'ja-JP');
+    });
+    document.getElementById(p+'Star').addEventListener('click', () => {
+      const st=kanaStates[script]; if(!st.orderIdxs.length) return;
+      const e = st.entries[st.orderIdxs[st.cursor]];
+      if (kanaStarSet.has(e.id)) kanaStarSet.delete(e.id); else kanaStarSet.add(e.id);
+      saveSet(KANA_STARS_KEY, kanaStarSet);
+      kanaRenderStudy(script); kanaRenderList(script);
+    });
+    document.getElementById(p+'Known').addEventListener('click', () => {
+      const st=kanaStates[script]; if(!st.orderIdxs.length) return;
+      const e = st.entries[st.orderIdxs[st.cursor]];
+      if (kanaKnownSet.has(e.id)) kanaKnownSet.delete(e.id); else kanaKnownSet.add(e.id);
+      saveSet(KANA_KNOWN_KEY, kanaKnownSet);
+      kanaRenderStudy(script); kanaRenderList(script);
+    });
+    // Filters
+    document.getElementById(p+'FilterStarred').addEventListener('change', (ev) => {
+      kanaStates[script].filterStarred = ev.target.checked; kanaApplyFilters(script); kanaRenderStudy(script); kanaRenderList(script);
+    });
+    document.getElementById(p+'FilterUnknown').addEventListener('change', (ev) => {
+      kanaStates[script].filterUnknown = ev.target.checked; kanaApplyFilters(script); kanaRenderStudy(script); kanaRenderList(script);
+    });
+    document.getElementById(p+'ListHideRomaji').addEventListener('change', () => { kanaRenderList(script); });
+    document.getElementById(p+'PageSearch').addEventListener('input', (ev) => {
+      kanaStates[script].pageSearch = ev.target.value || ''; kanaApplyFilters(script); kanaRenderStudy(script); kanaRenderList(script);
+    });
+    document.getElementById(p+'ResetFilters').addEventListener('click', () => {
+      const st=kanaStates[script];
+      st.filterStarred=false; st.filterUnknown=false; st.hideRomaji=false; st.shuffle=false; st.pageSearch='';
+      document.getElementById(p+'FilterStarred').checked=false;
+      document.getElementById(p+'FilterUnknown').checked=false;
+      document.getElementById(p+'ListHideRomaji').checked=false;
+      document.getElementById(p+'PageSearch').value='';
+      kanaApplyFilters(script); kanaRenderStudy(script); kanaRenderList(script);
+    });
+    // List actions
+    document.getElementById(p+'LearnList').addEventListener('click', (e) => {
+      const starBtn = e.target.closest('.star');
+      const knownBtn = e.target.closest('.known');
+      const goBtn = e.target.closest('button[data-pos]');
+      if (starBtn) {
+        const id = starBtn.getAttribute('data-id');
+        if (kanaStarSet.has(id)) kanaStarSet.delete(id); else kanaStarSet.add(id);
+        saveSet(KANA_STARS_KEY, kanaStarSet); kanaRenderStudy(script); kanaRenderList(script);
+      } else if (knownBtn) {
+        const id = knownBtn.getAttribute('data-id');
+        if (kanaKnownSet.has(id)) kanaKnownSet.delete(id); else kanaKnownSet.add(id);
+        saveSet(KANA_KNOWN_KEY, kanaKnownSet); kanaRenderStudy(script); kanaRenderList(script);
+      } else if (goBtn) {
+        const pos = parseInt(goBtn.getAttribute('data-pos'),10);
+        if (!Number.isNaN(pos)) { kanaStates[script].cursor = pos; kanaRenderStudy(script); scrollToTop(); }
+      }
+    });
+    // Include toggles + global search
+    document.getElementById(p+'Dakuten').addEventListener('change', () => kanaRebuild(script));
+    document.getElementById(p+'Handakuten').addEventListener('change', () => kanaRebuild(script));
+    document.getElementById(p+'Search').addEventListener('input', () => kanaRebuild(script));
+  }
+
+
+  // ===== Kana Quiz =====
+  let kanaActiveQuestions = [];
+  let kanaStartTime = 0;
+  let kanaTimerHandle = null;
+  const KANA_STATS_KEY = 'jpEnKanaQuizStats_v1_optDirScript';
+  function getKanaStats(){ try{ const raw=localStorage.getItem(KANA_STATS_KEY); if(!raw) return []; const arr=JSON.parse(raw); return Array.isArray(arr)?arr:[] } catch{ return [] } }
+  function saveKanaAttempt(attempt){ const arr=getKanaStats(); arr.push(attempt); localStorage.setItem(KANA_STATS_KEY, JSON.stringify(arr)); }
+  function buildKanaQuestion(entry, dir, script, optN){
+    const correctRomaji = Array.from(new Set(entry.altRomaji||[]))[0];
+    const kanaTarget = script==='kata' ? entry.kata : entry.hira;
+    if (dir==='kana-romaji'){
+      const prompt = (script==='both') ? (Math.random()<0.5? entry.hira : entry.kata) : kanaTarget;
+      const pool = shuffle(buildKanaEntries(true,true).map(e => Array.from(new Set(e.altRomaji||[]))[0]));
+      const distractors = pool.filter(x => normalizeEN(x)!==normalizeEN(correctRomaji)).slice(0, Math.max(0, optN-1));
+      const options = shuffle([correctRomaji, ...distractors]).slice(0, optN);
+      const correctIndex = options.findIndex(o => normalizeEN(o)===normalizeEN(correctRomaji));
+      return { promptSide:'kana', prompt, options, correctIndex, correctAlt:[correctRomaji] };
+    } else {
+      const prompt = correctRomaji;
+      const baseEntries = buildKanaEntries(true,true);
+      const poolKana = shuffle(baseEntries.map(e => (script==='both' ? (Math.random()<0.5? e.hira : e.kata) : (script==='kata'? e.kata : e.hira))));
+      const distractors = poolKana.filter(k => k!==kanaTarget).slice(0, Math.max(0, optN-1));
+      const options = shuffle([kanaTarget, ...distractors]).slice(0, optN);
+      const correctIndex = options.findIndex(o => o===kanaTarget);
+      return { promptSide:'romaji', prompt, options, correctIndex, correctAlt:[kanaTarget] };
+    }
+  }
+  function assembleKanaQuestions(entries, dir, script, optN, count){
+    const idxs = sample(entries, Math.min(count, entries.length));
+    return idxs.map((e,i)=> ({ ...buildKanaQuestion(e, dir, script, optN), idx:i, selected:null }));
+  }
+  function startKanaTimer(){
+    if (kanaTimerHandle) clearInterval(kanaTimerHandle);
+    const el = document.getElementById('kanaTimer');
+    kanaTimerHandle = setInterval(()=>{ const s=(performance.now()-kanaStartTime)/1000; el.textContent=s.toFixed(1)+'s'; },100);
+  }
+  function stopKanaTimer(){ if (kanaTimerHandle) clearInterval(kanaTimerHandle); kanaTimerHandle=null; }
+
+
+  function updateKanaStatsFilterInfo(){
+    const dir = document.getElementById('kanaDirection').value;
+    const script = document.getElementById('kanaQuizScript').value;
+    const opt = clamp(parseInt(document.getElementById('kanaOptCount').value)||4,3,6);
+    const dirLabel = dir==='kana-romaji' ? 'Kana → Romaji' : 'Romaji → Kana';
+    const scriptLabel = script==='hira'?'Hiragana':(script==='kata'?'Katakana':'Both');
+    document.getElementById('kanaStatsFilterInfo').textContent = `Stats filter: ${dirLabel} • ${scriptLabel} • ${opt} options`;
+  }
+
+
+  document.getElementById('kanaGenBtn').addEventListener('click', () => {
+    const dir = document.getElementById('kanaDirection').value;
+    const script = document.getElementById('kanaQuizScript').value;
+    const includeDakuten = document.getElementById('kanaQuizDakuten').checked;
+    const includeHandakuten = document.getElementById('kanaQuizHandakuten').checked;
+    const optN = clamp(parseInt(document.getElementById('kanaOptCount').value) || 4, 3, 6);
+    const count = clamp(parseInt(document.getElementById('kanaQuestionCount').value) || 30, 5, 200);
+    updateKanaStatsFilterInfo();
+
+    const entries = buildKanaEntries(includeDakuten, includeHandakuten);
+    if (!entries.length){ alert('No kana entries with current filters.'); return; }
+
+    kanaActiveQuestions = assembleKanaQuestions(entries, dir, script, optN, count);
+    document.getElementById('kanaPillDir').textContent = dir==='kana-romaji' ? 'Kana → Romaji' : 'Romaji → Kana';
+    document.getElementById('kanaPillScript').textContent = script==='hira'? 'Hiragana' : (script==='kata' ? 'Katakana' : 'Both');
+
+    const wrap = document.getElementById('kanaQuestions');
+    wrap.innerHTML='';
+    kanaActiveQuestions.forEach((q, i) => {
+      const promptHTML = `<strong>${escapeHtml(q.prompt)}</strong>`;
+      const optionsHTML = q.options.map((opt,j)=> `<div class="choice" data-q="${i}" data-opt="${j}" tabindex="0"><div class="dot"></div><div>${escapeHtml(opt)}</div></div>` ).join('');
+      const div=document.createElement('div'); div.className='question';
+      div.innerHTML = `<div class="qtitle">Q${i+1}. ${q.promptSide==='kana'?'Kana':'Romaji'}: ${promptHTML}</div><div class="choices">${optionsHTML}</div>`;
+      wrap.appendChild(div);
+    });
+
+    document.getElementById('kanaQuizArea').style.display='';
+    document.getElementById('kanaResultArea').style.display='none';
+    kanaStartTime = performance.now(); startKanaTimer();
+    loadKanaStatsFiltered();
+    renderKanaChartsFiltered();
+  });
+  document.getElementById('kanaQuestions').addEventListener('click', (e) => {
+    const choice = e.target.closest('.choice'); if (!choice) return;
+    const qi = parseInt(choice.dataset.q), oi = parseInt(choice.dataset.opt);
+    kanaActiveQuestions[qi].selected = oi;
+    const container = choice.parentElement;
+    container.querySelectorAll('.choice').forEach(el => el.classList.remove('active'));
+    choice.classList.add('active');
+  });
+  document.getElementById('kanaSubmitBtn').addEventListener('click', () => {
+    document.getElementById('kanaSubmitBtn').disabled = true;
+    stopKanaTimer();
+    const totalTimeSec = (performance.now() - kanaStartTime)/1000;
+    let score=0; kanaActiveQuestions.forEach(q=>{ if (q.selected===q.correctIndex) score++; });
+    const percent = Math.round((score/kanaActiveQuestions.length)*100);
+    document.getElementById('kanaQuizArea').style.display='none';
+    document.getElementById('kanaResultArea').style.display='';
+    document.getElementById('kanaScore').textContent = `${score} / ${kanaActiveQuestions.length} (${percent}%)`;
+    document.getElementById('kanaScoreBar').style.width = `${percent}%`;
+    document.getElementById('kanaTimeTaken').textContent = `${totalTimeSec.toFixed(1)} seconds`;
+
+    const container = document.getElementById('kanaReview'); container.innerHTML='';
+    kanaActiveQuestions.forEach((q, idx) => {
+      const userPicked = (q.selected != null) ? q.options[q.selected] : '(no selection)';
+      const correct = q.options[q.correctIndex];
+      const ok = (q.selected === q.correctIndex);
+      const card = document.createElement('div'); card.className='review-card';
+      card.innerHTML = `
+        <div class="qtitle">Q${idx+1}. ${q.promptSide==='kana'?'Kana':'Romaji'}: <strong>${escapeHtml(q.prompt)}</strong></div>
+        <div>Your answer: ${ok ? '<span class="result-ok">' : '<span class="result-bad">'}${escapeHtml(userPicked)}</span></div>
+        <div>Correct: <strong>${escapeHtml(correct)}</strong></div>
+      `;
+      container.appendChild(card);
+    });
+
+    const dir = document.getElementById('kanaDirection').value;
+    const script = document.getElementById('kanaQuizScript').value;
+    const optN = clamp(parseInt(document.getElementById('kanaOptCount').value) || 4, 3, 6);
+    saveKanaAttempt({
+      date: new Date().toISOString(),
+      direction: dir,
+      script,
+      optCount: optN,
+      questions: kanaActiveQuestions.length,
+      score,
+      timeSec: parseFloat(totalTimeSec.toFixed(1))
+    });
+    loadKanaStatsFiltered();
+    renderKanaChartsFiltered();
+    document.getElementById('kanaSubmitBtn').disabled = false;
+  });
+  document.getElementById('kanaCancelBtn').addEventListener('click', () => {
+    stopKanaTimer(); document.getElementById('kanaQuizArea').style.display='none';
+  });
+  document.getElementById('kanaBackBtn').addEventListener('click', () => {
+    document.getElementById('kanaResultArea').style.display='none'; document.getElementById('kanaQuizArea').style.display='none';
+  });
+
+
+  function loadKanaStatsFiltered(){
+    const arrAll = getKanaStats();
+    const dir = document.getElementById('kanaDirection').value;
+    const script = document.getElementById('kanaQuizScript').value;
+    const opt = clamp(parseInt(document.getElementById('kanaOptCount').value)||4,3,6);
+    const arr = arrAll.filter(a => a.direction === dir && a.script === script && a.optCount === opt);
+    const statsDiv = document.getElementById('kanaStats');
+    if (!arr.length) { statsDiv.textContent='No kana attempts for the selected combination.'; return; }
+    const s = summarize(arr);
+    const dirLabel = dir==='kana-romaji'?'Kana → Romaji':'Romaji → Kana';
+    const scriptLabel = script==='hira'?'Hiragana':(script==='kata'?'Katakana':'Both');
+    let html = '';
+    html += `<p><strong>Filter:</strong> ${dirLabel} • ${scriptLabel} • ${opt} options</p>`;
+    html += `<p>Attempts: ${s.count}, Avg %: ${s.avgPct.toFixed(1)}%, Avg Time: ${s.avgTime.toFixed(1)}s</p>`;
+    statsDiv.innerHTML = html;
+  }
+  function renderKanaChartsFiltered(){
+    const arrAll = getKanaStats();
+    const dir = document.getElementById('kanaDirection').value;
+    const script = document.getElementById('kanaQuizScript').value;
+    const opt = clamp(parseInt(document.getElementById('kanaOptCount').value)||4,3,6);
+    const arr = arrAll.filter(a => a.direction === dir && a.script === script && a.optCount === opt);
+
+    const canvas = document.getElementById('kanaChartOverall');
+    const { ctx, width, height } = prepCanvas(canvas);
+    ctx.clearRect(0,0,width,height);
+    const pad = { l:36, r:12, t:10, b:20 };
+    drawAxes(ctx, pad.l, pad.t, width - pad.l - pad.r, height - pad.t - pad.b);
+    drawGrid(ctx, pad.l, pad.t, width - pad.l - pad.r, height - pad.t - pad.b, 5);
+    const last50 = arr.slice(-50);
+    const values = last50.map(a => (a.score||0)/(a.questions||1)*100);
+    drawLineSeries(ctx, pad.l, pad.t, width - pad.l - pad.r, height - pad.t - pad.b, values, '#0ea5e9');
+  }
+
+
+  // Resize: rerender charts for current filters
+  window.addEventListener('resize', () => {
+    renderChartsFiltered(getStats().filter(a => a.direction === document.getElementById('direction').value && a.optCount === clamp(parseInt(document.getElementById('optCount').value)||4,3,6)), 'chartOverall', 'chartByQuiz', 'quizIndex', 'Q');
+    renderChartsFiltered(getMegaStats().filter(a => a.direction === document.getElementById('megaDirection').value && a.optCount === clamp(parseInt(document.getElementById('megaOptCount').value)||4,3,6)), 'megaChartOverall', 'megaChartByQuiz', 'megaQuizIndex', 'MQ');
+    renderKanaChartsFiltered();
+  });
+
+
+  function scrollToTop(){ window.scrollTo({top:0, behavior:'smooth'}); }
+
+
+  let inited = false;
+  function appInit(){
+    computeTenBlocks();
+    populateLearnBlockSelect();
+    renderQuizGrid();
+    initKanaUI('hira');
+    initKanaUI('kata');
+    setActiveTab('learn');
+  }
+  function appInitOnce(){ if (inited) return; inited = true; appInit(); }
+
+  // Hide/Show Romaji toggles for Vocab Quiz and Mega Quiz
+  document.getElementById('quizHideRomaji').addEventListener('change', (e) => {
+    document.getElementById('quizarea').classList.toggle('hide-romaji', e.target.checked);
+  });
+  document.getElementById('megaHideRomaji').addEventListener('change', (e) => {
+    document.getElementById('megaQuizarea').classList.toggle('hide-romaji', e.target.checked);
+  });
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
