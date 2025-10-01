@@ -693,14 +693,33 @@
   }
   function saveSession() {
   const exp = Date.now() + AUTH_SESSION_TTL_MS;
-  // Save expiry timestamp in a cookie that lasts AUTH_SESSION_TTL_MS seconds
-  document.cookie = `${AUTH_SESSION_KEY}=${exp}; max-age=${AUTH_SESSION_TTL_MS / 1000}; path=/`;
+  const req = indexedDB.open('jpEnAuthDB', 1);
+  req.onupgradeneeded = function(e) {
+    e.target.result.createObjectStore('session');
+  };
+  req.onsuccess = function(e) {
+    const db = e.target.result;
+    const tx = db.transaction('session', 'readwrite');
+    tx.objectStore('session').put(exp, AUTH_SESSION_KEY);
+  };
 }
- function hasValidSession() {
-  const match = document.cookie.match(new RegExp(`${AUTH_SESSION_KEY}=([^;]+)`));
-  if (!match) return false;
-  const exp = parseInt(match[1], 10);
-  return Date.now() < exp;
+function hasValidSession(callback) {
+  const req = indexedDB.open('jpEnAuthDB', 1);
+  req.onupgradeneeded = function(e) {
+    e.target.result.createObjectStore('session');
+  };
+  req.onsuccess = function(e) {
+    const db = e.target.result;
+    const tx = db.transaction('session', 'readonly');
+    const getReq = tx.objectStore('session').get(AUTH_SESSION_KEY);
+    getReq.onsuccess = function() {
+      const exp = getReq.result;
+      callback(exp && Date.now() < exp);
+    };
+    getReq.onerror = function() {
+      callback(false);
+    };
+  };
 }
   async function sha256Hex(str){ const enc = new TextEncoder().encode(str); const buf = await crypto.subtle.digest("SHA-256", enc); return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join(''); }
   async function checkRemotePassword(input){
@@ -725,15 +744,31 @@
     if (ok) { saveSession(); setAppVisible(true); appInitOnce(); } else { err.style.display = ''; }
   }
  function logout() {
-  // Delete the cookie
-  document.cookie = `${AUTH_SESSION_KEY}=; max-age=0; path=/`;
-  document.getElementById('authPass').value = '';
-  setAppVisible(false);
+  const req = indexedDB.open('jpEnAuthDB', 1);
+  req.onupgradeneeded = function(e) {
+    e.target.result.createObjectStore('session');
+  };
+  req.onsuccess = function(e) {
+    const db = e.target.result;
+    const tx = db.transaction('session', 'readwrite');
+    tx.objectStore('session').delete(AUTH_SESSION_KEY);
+    document.getElementById('authPass').value = '';
+    setAppVisible(false);
+  };
 }
   document.getElementById('authBtn').addEventListener('click', attemptAuth);
   document.getElementById('authPass').addEventListener('keydown', (e) => { if (e.key === 'Enter') attemptAuth(); });
   document.getElementById('logoutBtn').addEventListener('click', logout);
-  window.addEventListener('load', () => { if (hasValidSession()) { setAppVisible(true); appInitOnce(); } else { setAppVisible(false); } });
+  window.addEventListener('load', () => { 
+  hasValidSession(ok => {
+    if (ok) { 
+      setAppVisible(true); 
+      appInitOnce(); 
+    } else { 
+      setAppVisible(false); 
+    }
+  });
+});
 
   /* ===== Utilities ===== */
   function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -2873,3 +2908,4 @@
 </script>
 </body>
 </html>
+
