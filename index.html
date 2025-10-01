@@ -681,6 +681,19 @@
 
 
 <script>
+function storageAvailable(type) {
+    try {
+        var storage = window[type], x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    } catch(e) {
+        return false;
+    }
+}
+if (!storageAvailable('localStorage')) {
+    alert('localStorage is not available. Please check your browser settings.');
+}
   /* ===== AUTH ===== */
   const AUTH_LOCAL_PASSWORD = "Jhakrishan2411";
   const AUTH_REMOTE_URL = "";
@@ -693,33 +706,11 @@
   }
   function saveSession() {
   const exp = Date.now() + AUTH_SESSION_TTL_MS;
-  const req = indexedDB.open('jpEnAuthDB', 1);
-  req.onupgradeneeded = function(e) {
-    e.target.result.createObjectStore('session');
-  };
-  req.onsuccess = function(e) {
-    const db = e.target.result;
-    const tx = db.transaction('session', 'readwrite');
-    tx.objectStore('session').put(exp, AUTH_SESSION_KEY);
-  };
+  localStorage.setItem(AUTH_SESSION_KEY, exp);
 }
-function hasValidSession(callback) {
-  const req = indexedDB.open('jpEnAuthDB', 1);
-  req.onupgradeneeded = function(e) {
-    e.target.result.createObjectStore('session');
-  };
-  req.onsuccess = function(e) {
-    const db = e.target.result;
-    const tx = db.transaction('session', 'readonly');
-    const getReq = tx.objectStore('session').get(AUTH_SESSION_KEY);
-    getReq.onsuccess = function() {
-      const exp = getReq.result;
-      callback(exp && Date.now() < exp);
-    };
-    getReq.onerror = function() {
-      callback(false);
-    };
-  };
+function hasValidSession() {
+  const exp = parseInt(localStorage.getItem(AUTH_SESSION_KEY), 10);
+  return exp && Date.now() < exp;
 }
   async function sha256Hex(str){ const enc = new TextEncoder().encode(str); const buf = await crypto.subtle.digest("SHA-256", enc); return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join(''); }
   async function checkRemotePassword(input){
@@ -743,32 +734,15 @@ function hasValidSession(callback) {
     if (ok === null) ok = (pass === AUTH_LOCAL_PASSWORD);
     if (ok) { saveSession(); setAppVisible(true); appInitOnce(); } else { err.style.display = ''; }
   }
- function logout() {
-  const req = indexedDB.open('jpEnAuthDB', 1);
-  req.onupgradeneeded = function(e) {
-    e.target.result.createObjectStore('session');
-  };
-  req.onsuccess = function(e) {
-    const db = e.target.result;
-    const tx = db.transaction('session', 'readwrite');
-    tx.objectStore('session').delete(AUTH_SESSION_KEY);
-    document.getElementById('authPass').value = '';
-    setAppVisible(false);
-  };
+function logout() {
+  localStorage.removeItem(AUTH_SESSION_KEY);
+  document.getElementById('authPass').value = '';
+  setAppVisible(false);
 }
   document.getElementById('authBtn').addEventListener('click', attemptAuth);
   document.getElementById('authPass').addEventListener('keydown', (e) => { if (e.key === 'Enter') attemptAuth(); });
   document.getElementById('logoutBtn').addEventListener('click', logout);
-  window.addEventListener('load', () => { 
-  hasValidSession(ok => {
-    if (ok) { 
-      setAppVisible(true); 
-      appInitOnce(); 
-    } else { 
-      setAppVisible(false); 
-    }
-  });
-});
+  window.addEventListener('load', () => { if (hasValidSession()) { setAppVisible(true); appInitOnce(); } else { setAppVisible(false); } });
 
   /* ===== Utilities ===== */
   function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -2908,4 +2882,14 @@ function hasValidSession(callback) {
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
 
