@@ -110,6 +110,7 @@
   .learn-row:last-child{ border-bottom:none }
   .row-actions button{ margin-left:6px }
   .hide-en .en-cell { filter: blur(7px); }
+  .hide-en .en-cell { filter: blur(7px); }
   .grid{ display:grid; gap:12px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
   .quiz-card{ background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow: var(--shadow) }
   table { width:100%; border-collapse:collapse; margin-top:10px }
@@ -306,6 +307,7 @@
           <div class="flex" style="margin-top:10px">
             <label><input type="checkbox" id="filterStarred" /> <span class="label-inline">Starred only</span></label>
             <label><input type="checkbox" id="toggleListHideEn" /> <span class="label-inline">Blur English in List</span></label>
+            <label><input type="checkbox" id="toggleListHideRomaji" /> <span class="label-inline">Hide Romaji in List</span></label>
             <label>Search in Page
               <input id="learnBlockSearch" type="text" placeholder="Search this page..." />
             </label>
@@ -2007,6 +2009,8 @@ function logout() {
     const wrap = document.getElementById('learnList');
     const blur = document.getElementById('toggleListHideEn').checked;
     wrap.classList.toggle('hide-en', blur);
+    const hideRomaji = document.getElementById('toggleListHideRomaji').checked;
+  wrap.classList.toggle('hide-romaji', hideRomaji);
     wrap.innerHTML = '';
     learnState.orderIdxs.forEach((idx, pos) => {
       const it = items[idx];
@@ -2056,6 +2060,7 @@ function logout() {
   });
   
   document.getElementById('toggleListHideEn').addEventListener('change', () => renderLearnList());
+  document.getElementById('toggleListHideRomaji').addEventListener('change', () => renderLearnList());
   document.getElementById('btnResetFilters').addEventListener('click', () => {
     learnState.filterStarred = false; learnState.filterUnknown = false; learnState.hideEnglish = false; learnState.shuffle = false; learnState.searchBlock = '';
     document.getElementById('filterStarred').checked = false;
@@ -2882,6 +2887,7 @@ function logout() {
 </script>
 </body>
 </html>
+
 
 
 
