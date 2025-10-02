@@ -2452,35 +2452,98 @@ function logout() {
 
   // ===== Learn Hiragana & Katakana (Enhanced like Learn Words) =====
   function buildKanaEntries(includeDakuten, includeHandakuten){
-    const entries = [];
-    function pushEntry(romaji, hira, kata, type='base', alts=[]){ const alt = Array.from(new Set([romaji, ...alts])); entries.push({ romaji, hira, kata, type, altRomaji: alt }); }
+  const baseRows = [
     // vowels
-    [['a','あ','ア'],['i','い','イ'],['u','う','ウ'],['e','え','エ'],['o','お','オ']].forEach(([r,h,k])=> pushEntry(r,h,k));
-    // K / G
-    [['ka','か','カ'],['ki','き','キ'],['ku','く','ク'],['ke','け','ケ'],['ko','こ','コ']].forEach(e=> pushEntry(...e));
-    if (includeDakuten) [['ga','が','ガ'],['gi','ぎ','ギ'],['gu','ぐ','グ'],['ge','げ','ゲ'],['go','ご','ゴ']].forEach(e=> pushEntry(...e,'dakuten'));
-    // S / Z
-    [['sa','さ','サ'],['shi','し','シ',['si']],['su','す','ス'],['se','せ','セ'],['so','そ','ソ']].forEach(([r,h,k,alts])=> pushEntry(r,h,k,'base',alts||[]));
-    if (includeDakuten) [['za','ざ','ザ'],['ji','じ','ジ',['zi']],['zu','ず','ズ'],['ze','ぜ','ゼ'],['zo','ぞ','ゾ']].forEach(([r,h,k,alts])=> pushEntry(r,h,k,'dakuten',alts||[]));
-    // T / D
-    [['ta','た','タ'],['chi','ち','チ',['ti']],['tsu','つ','ツ',['tu']],['te','て','テ'],['to','と','ト']].forEach(([r,h,k,alts])=> pushEntry(r,h,k,'base',alts||[]));
-    if (includeDakuten) [['da','だ','ダ'],['ji','ぢ','ヂ',['di','ji']],['zu','づ','ヅ',['du','zu']],['de','で','デ'],['do','ど','ド']].forEach(([r,h,k,alts])=> pushEntry(r,h,k,'dakuten',alts||[]));
+    [['a','あ','ア']],
+    [['i','い','イ']],
+    [['u','う','ウ']],
+    [['e','え','エ']],
+    [['o','お','オ']],
+    // K/G
+    [['ka','か','カ'], ['ga','が','ガ']],
+    [['ki','き','キ'], ['gi','ぎ','ギ']],
+    [['ku','く','ク'], ['gu','ぐ','グ']],
+    [['ke','け','ケ'], ['ge','げ','ゲ']],
+    [['ko','こ','コ'], ['go','ご','ゴ']],
+    // S/Z
+    [['sa','さ','サ'], ['za','ざ','ザ']],
+    [['shi','し','シ',['si']], ['ji','じ','ジ',['zi']]],
+    [['su','す','ス'], ['zu','ず','ズ']],
+    [['se','せ','セ'], ['ze','ぜ','ゼ']],
+    [['so','そ','ソ'], ['zo','ぞ','ゾ']],
+    // T/D
+    [['ta','た','タ'], ['da','だ','ダ']],
+    [['chi','ち','チ',['ti']], ['ji','ぢ','ヂ',['di','ji']]],
+    [['tsu','つ','ツ',['tu']], ['zu','づ','ヅ',['du','zu']]],
+    [['te','て','テ'], ['de','で','デ']],
+    [['to','と','ト'], ['do','ど','ド']],
     // N
-    [['na','な','ナ'],['ni','に','ニ'],['nu','ぬ','ヌ'],['ne','ね','ネ'],['no','の','ノ']].forEach(e=> pushEntry(...e));
-    // H / B / P
-    [['ha','は','ハ'],['hi','ひ','ヒ'],['fu','ふ','フ',['hu']],['he','へ','ヘ'],['ho','ほ','ホ']].forEach(([r,h,k,alts])=> pushEntry(r,h,k,'base',alts||[]));
-    if (includeDakuten) [['ba','ば','バ'],['bi','び','ビ'],['bu','ぶ','ブ'],['be','べ','ベ'],['bo','ぼ','ボ']].forEach(e=> pushEntry(...e,'dakuten'));
-    if (includeHandakuten) [['pa','ぱ','パ'],['pi','ぴ','ピ'],['pu','ぷ','プ'],['pe','ぺ','ペ'],['po','ぽ','ポ']].forEach(e=> pushEntry(...e,'handakuten'));
+    [['na','な','ナ']],
+    [['ni','に','ニ']],
+    [['nu','ぬ','ヌ']],
+    [['ne','ね','ネ']],
+    [['no','の','ノ']],
+    // H/B/P
+    [['ha','は','ハ'], ['ba','ば','バ'], ['pa','ぱ','パ']],
+    [['hi','ひ','ヒ'], ['bi','び','ビ'], ['pi','ぴ','ピ']],
+    [['fu','ふ','フ',['hu']], ['bu','ぶ','ブ'], ['pu','ぷ','プ']],
+    [['he','へ','ヘ'], ['be','べ','ベ'], ['pe','ぺ','ペ']],
+    [['ho','ほ','ホ'], ['bo','ぼ','ボ'], ['po','ぽ','ポ']],
     // M
-    [['ma','ま','マ'],['mi','み','ミ'],['mu','む','ム'],['me','め','メ'],['mo','も','モ']].forEach(e=> pushEntry(...e));
+    [['ma','ま','マ']],
+    [['mi','み','ミ']],
+    [['mu','む','ム']],
+    [['me','め','メ']],
+    [['mo','も','モ']],
     // Y
-    [['ya','や','ヤ'],['yu','ゆ','ユ'],['yo','よ','ヨ']].forEach(e=> pushEntry(...e));
+    [['ya','や','ヤ']],
+    [['yu','ゆ','ユ']],
+    [['yo','よ','ヨ']],
     // R
-    [['ra','ら','ラ'],['ri','り','リ'],['ru','る','ル'],['re','れ','レ'],['ro','ろ','ロ']].forEach(e=> pushEntry(...e));
+    [['ra','ら','ラ']],
+    [['ri','り','リ']],
+    [['ru','る','ル']],
+    [['re','れ','レ']],
+    [['ro','ろ','ロ']],
     // W + N
-    [['wa','わ','ワ'],['wo','を','ヲ',['o']],['n','ん','ン']].forEach(([r,h,k,alts])=> pushEntry(r,h,k,'base',alts||[]));
-    return entries;
+    [['wa','わ','ワ']],
+    [['wo','を','ヲ',['o']]],
+    [['n','ん','ン']]
+  ];
+
+  const entries = [];
+  for (const row of baseRows) {
+    // Always add base
+    const [base, ...rest] = row;
+    const [romaji, hira, kata, altsBase] = base;
+    entries.push({ romaji, hira, kata, type:'base', altRomaji: Array.from(new Set([romaji, ...(altsBase||[])])) });
+
+    // Add dakuten if present and checked
+    if (includeDakuten) {
+      for (const item of rest) {
+        if (item.length < 4 || item[3] !== 'handakuten') { // not handakuten
+          const [r, h, k, alts] = item;
+          entries.push({ romaji:r, hira:h, kata:k, type:'dakuten', altRomaji: Array.from(new Set([r, ...(alts||[])])) });
+        }
+      }
+    }
+    // Add handakuten if present and checked
+    if (includeHandakuten) {
+      for (const item of rest) {
+        if (item.length >= 4 && item[3] === 'handakuten') {
+          const [r, h, k, alts] = item;
+          entries.push({ romaji:r, hira:h, kata:k, type:'handakuten', altRomaji: Array.from(new Set([r, ...(alts||[])])) });
+        }
+      }
+      // For H-row, handakuten is always the 3rd item
+      if (row.length === 3 && row[2][0].endsWith('p')) {
+        const [r, h, k, alts] = row[2];
+        entries.push({ romaji:r, hira:h, kata:k, type:'handakuten', altRomaji: Array.from(new Set([r, ...(alts||[])])) });
+      }
+    }
   }
+  return entries;
+}
 
 
   // Kana learn states and storage
@@ -2888,6 +2951,7 @@ function logout() {
 </script>
 </body>
 </html>
+
 
 
 
